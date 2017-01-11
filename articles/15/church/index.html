@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Making numbers with lambda</title>
+  <meta name="description" content="The lambda idea is powerful. It can even be usedto define fundamental things like integers. I knowwhat you are thinking: this must be a horriblyinefficient w...">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here -->
+  <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="/articles/15/church">
+  <link rel="alternate" type="application/rss+xml" title="The Proof Chef" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+		<a href="/"><img class="badge" src="/assets/img/lambda-parens-logo.jpg" alt="New"></a>
+		<a href="/">Notebook</a>
+		<a href="/page">Books and Articles</a>
+		<a href="/page/code.html">Code</a>
+		<a href="/about">About Tedszy</a>
+	</nav>
+</header>
+
+    <article>
+      <h1>Making numbers with lambda</h1>
+<p>October 28, 2015</p>
+
+
+<p>The lambda idea is powerful. It can even be used<br />
+to define fundamental things like integers. I know<br />
+what you are thinking: this must be a horribly<br />
+inefficient way of working with integers. Yes, it is,<br />
+compared to native integer operations supported by the<br />
+CPU. But the same lambda-techniques can be applied to<br />
+abstractions that are not supported directly by the CPU.<br />
+Suddenly lambdas become a competitive way to model, say,<br />
+group elements or objects in geometry.</p>
+
+<p>Whatever the case, Church numerals are a great<br />
+example of the power that lambdas have for expressing<br />
+abstract ideas. Here is a simple implementation of<br />
+Church numeras, inspired by <a href="http://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1">SICP exercise 2.6</a>.</p>
+
+<p><a href="https://github.com/tedszy/functional-workout/blob/master/church-numerals.rkt">church-numerals.rkt</a>.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Making numbers with lambda - October 28, 2015 - Ted Szylowiec</span>
+    <footer>
+  <ul class="footer-links group">
+   <!-- 
+   <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
+   -->
+    
+      <li>
+        <a href="//github.com/tedszy"><span class="icon-github"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2017 &nbsp;&nbsp;TED SZYLOWIEC</span></br> 
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for Mathematics Teaching </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

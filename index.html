@@ -1,0 +1,690 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tedszy</title>
+  <meta name="description" content="Mathematics and Computer Science Teaching">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here -->
+  <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="/">
+  <link rel="alternate" type="application/rss+xml" title="The Proof Chef" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+		<a href="/"><img class="badge" src="/assets/img/lambda-parens-logo.jpg" alt="New"></a>
+		<a href="/">Notebook</a>
+		<a href="/page">Books and Articles</a>
+		<a href="/page/code.html">Code</a>
+		<a href="/about">About Tedszy</a>
+	</nav>
+</header>
+
+
+    <article>
+        <h1 class="content-listing-header sans">Tedszy's Notebook</h1>
+  <ul class="content">
+
+
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/17/sme-problems"><h3 class="contrast">SME practice problems</h3></a>
+          <!--
+          <br><span class="smaller">January 11, 2017</span>  <br/>
+          -->
+          <div><p><span class="newthought">Do all</span>  of these problems and you will get an A+.<br />
+New problems will be added every week, so check <br />
+back here often.</p>
+
+<h5 id="sme-m2-210-29-28">SME M2: 2/10, 2/9, 2/8</h5>
+
+<p>Case studies in problem-solving. Problems in physics,<br />
+applied math, pure math, geometry, finance, anything.<br />
+Download here:</p>
+
+<p><a href="/assets/m2.pdf">M2 practice problems, pdf</a></p>
+
+<h5 id="sme-m1-110-19-18">SME M1: 1/10, 1/9, 1/8</h5>
+
+<p>Operational techniques for plotting graphs and curves.<br />
+Download here:</p>
+
+<p>(coming soon!)</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/cartesian"><h3 class="contrast">Subsets and Cartesian Products</h3></a>
+          <!--
+          <br><span class="smaller">September 15, 2016</span>  <br/>
+          -->
+          <div><p><span class="newthought">Computing subsets and Cartesian products</span>  are common <br />
+tasks you are faced with when trying to solve problems by computer <br />
+programming. And common advice you get is to do these things by <br />
+recursion or, in the case of Cartesian products, by Lisp macros.<br />
+But we don’t want to do them that way.</p>
+
+<h4 id="subsets">1. Subsets</h4>
+
+<p>A typical Scheme formula for computing subsets uses recursion. But<br />
+suppose you are looking for something among the subsets of a large<br />
+set. What if you have billions of subsets and you want to iterate over<br />
+them one at a time? Well forget the usual recursive solutions. We are<br />
+going to use bit-hacking on integers.</p>
+
+<p>Every subset of a set can be represented by a binary code. For <br />
+example consider the set <code>{A,B,C,D,E}</code>. If we set <code>0</code> to<br />
+mean “don’t choose the element” and <code>1</code> to mean “choose the<br />
+element”, then the subset <code>{A,C,E}</code> can be represented<br />
+by the binary code <code>10101</code>:</p>
+
+<pre><code>A B C D E
+1`0 1 0 1
+---------
+A   C   E
+</code></pre>
+
+<p>This leads to a good idea! If we take any integer less than <code>2^5</code><br />
+and we extract the bits using arithmetic right shift, we can decode<br />
+which elements are chosen for the subset and which are rejected.<br />
+Looping through all such numbers gives us all possible subsets.</p>
+
+<pre><code class="language-cl">(defun subsets (myset)
+  (loop for k from 0 below (expt 2 (length myset))
+     collecting (loop for s in myset
+		   with subset = nil
+		   with bitfield = k
+		   do (when (= 1 (logand bitfield 1))
+			(push s subset))
+		     (setf bitfield (ash bitfield -1))
+		   finally (return subset))))
+</code></pre>
+
+<p>We test if the last bit is 1 by doing bitwise-<code>and</code> with 1. Then we <br />
+right-shift to get the next bit, and so on. We know that there will <br />
+be <code>2^n</code> subsets, so we know when to stop. This way of doing it <br />
+allows some easy modifications. For instance, if you don’t want the <br />
+empty set, just start iterating from <code>k=1</code> instead of <code>k=0.</code> What <br />
+could possibly be easier than this? No need for mind-bending <br />
+inefficient recursion. Illustration:</p>
+
+<pre><code class="language-cl">&gt; (subsets '(a b c d))
+(NIL (A) (B) (B A) (C) (C A) (C B) (C B A) (D) (D A) 
+(D B) (D B A) (D C) (D C A) (D C B) (D C B A))
+</code></pre>
+
+<h4 id="cartesian-products">2. Cartesian Products</h4>
+
+<p>Suppose we have three lists of number <code>(2 3 5)</code>, <code>(7 11 13)</code> <br />
+and <code>(17 19 23).</code> We want to form all possible products obtained by <br />
+choosing one number from each list. No problem, you say, you’ll just <br />
+use nested loops, one loop for each list. But that works only if you <br />
+know you will have exactly three lists of numbers. What if you have <br />
+<code>n</code> lists of numbers? Then what? Recursion? I’ve seen it done that <br />
+way. Macros? Yes, incredible as it sounds, I’ve seen macros that <br />
+generate <code>n</code> nested loops to do this job.</p>
+
+<p>But none of such things are necessary when there exists a perfectly <br />
+good functional programming idiom tailor-made for these kind of <br />
+jobs: <code>reduce</code>!</p>
+
+<pre><code class="language-cl">(defun cartesian (list-of-lists)
+  (reduce #'(lambda (u v)
+	      (loop for i in u 
+                 nconc (loop for j in v collect (* i j))))
+	  list-of-lists))
+</code></pre>
+
+<p>The <code>lambda</code> function takes two lists and does a Cartesian product,<br />
+concatenating all the results into one big list. Further Cartesian <br />
+products are accumulated into this list by <code>reduce</code> as it traverses <br />
+down the <code>list-of-lists.</code> There, a simple functional way <br />
+of doing it. Illustration:</p>
+
+<pre><code class="language-cl">&gt;(cartesian '((2 3 5) (7 11 13) (17 19 23)))
+(238 266 322 374 418 506 442 494 598 357 399 483 561 627 
+ 759 663 741 897 595 665 805 935 1045 1265 1105 1235 1495)
+</code></pre>
+
+<p>A example of an application for Cartesian product is to compute <br />
+all the divisors of a number when the prime factorization is known.</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/pascal-congruences"><h3 class="contrast">Even and odd sized subsets and more</h3></a>
+          <!--
+          <br><span class="smaller">July 3, 2016</span>  <br/>
+          -->
+          <div><p><span class="newthought">Consider a set</span>  of size <code>n</code>. How many even-sized subsets<br />
+does it have, and how many odd-sized subsets does it have?<br />
+Another way to phrase this question is: how many <code>k</code>-subsets<br />
+are there when <code>k=0 mod 2</code>, and how many are there<br />
+when <code>k=1 mod 2</code>?</p>
+
+<p>One way of computing this is to take the <code>n</code>th row of<br />
+Pascal’s triangle and add up all the counts for <code>k=0 mod 2</code><br />
+and then for <code>k=1 mod 2</code>. I have written some functions<br />
+that do this in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a>. To use this module, you will also<br />
+need <a href="https://github.com/tedszy/functional-workout/blob/master/grid.rkt">grid.rkt</a>.</p>
+
+<pre><code>-&gt; (subset-count-congruence-table 2 7)
+n         =0     =1  
+-----  -----  -----  
+0          1      0  
+1          1      1  
+2          2      2  
+3          4      4  
+4          8      8  
+5         16     16  
+6         32     32  
+</code></pre>
+
+<p>So, a set of 6 elements has 32 odd-sized subsets and<br />
+32 even-sized subsets. Let’s abstract away the numbers<br />
+and look at only the patterns.</p>
+
+<pre><code>n         =0     =1  
+-----  -----  -----  
+0          1      0
+1          =      =  
+2          =      =  
+3          =      =  
+4          =      =  
+5          =      =  
+6          =      =  
+</code></pre>
+
+<p>For <code>n &gt; 0</code> the pattern repeats itself with a period of 1. There<br />
+are always as many even-sized subsets as odd-sized. Since<br />
+the total number of subsets is <code>2^n</code>, it must be that there<br />
+are <code>2^(n-1)</code> odd-sized (or even-sized) subsets.</p>
+
+<p>And now we see why rephrasing the question in terms of modular<br />
+arithmetic is productive. It is immediately natural to ask: what<br />
+about other moduli? What about the number of subsets with size<br />
+divisible by three? And so on. The code in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> handles<br />
+any modulus. Let’s try mod 3.</p>
+
+<pre><code>-&gt; (subset-count-congruence-table 3 13)
+n         =0     =1     =2  
+-----  -----  -----  -----  
+0          1      0      0  
+1          1      1      0  
+2          1      2      1  
+3          2      3      3  
+4          5      5      6  
+5         11     10     11  
+6         22     21     21  
+7         43     43     42  
+8         85     86     85  
+9        170    171    171  
+10       341    341    342  
+11       683    682    683  
+12      1366   1365   1365  
+</code></pre>
+
+<p>Let’s abstract away the numbers and keep the patterns.<br />
+There are always two entries that are equal. The third<br />
+is either greater by 1 or less by 1.</p>
+
+<pre><code>n         =0     =1     =2  
+-----  -----  -----  -----  
+0         +1      =      =
+1          =      =     -1
+2          =     +1      =
+3         -1      =      =  
+4          =      =     +1  
+5          =     -1      =  
+6         +1      =      =
+7          =      =     -1  
+8          =     +1      =  
+9         -1      =      =
+10         =      =     +1  
+11         =     -1      =
+12        +1      =      =
+</code></pre>
+
+<p>The pattern repeats itself after 6 rows. The period is 6.<br />
+What about other moduli, such as mod 4 or mod 5?<br />
+The code module <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> saves us the pain of<br />
+computing the necessary tables. Here is a table for mod 4.</p>
+
+<pre><code>-&gt; (subset-count-congruence-table 4 11)
+n         =0     =1     =2     =3  
+-----  -----  -----  -----  -----  
+0          1      0      0      0  
+1          1      1      0      0  
+2          1      2      1      0  
+3          1      3      3      1  
+4          2      4      6      4  
+5          6      6     10     10  
+6         16     12     16     20  
+7         36     28     28     36  
+8         72     64     56     64  
+9        136    136    120    120  
+10       256    272    256    240  
+</code></pre>
+
+<p>Clearly there is a pattern here, but it’s more complicated.<br />
+Does the pattern (whatever it may be) repeat itself? What is<br />
+the period for mod 4? What about mod 5, etc? There is plenty<br />
+of opportunity for you to do some interesting research here!<br />
+Use <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> and <a href="https://github.com/tedszy/functional-workout/blob/master/grid.rkt">grid.rkt</a> and be creative!</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/inside-out"><h3 class="contrast">Inside-Out: mutual recursion vs. function application</h3></a>
+          <!--
+          <br><span class="smaller">June 8, 2016</span>  <br/>
+          -->
+          <div><p><span class="newthought">Recursion</span>  can be imagined as repeated function applications<br />
+turned inside-out. How about mutual recursion? That’s a<br />
+notoriously difficult idea to visualize, but even that can be<br />
+understood the same way. Except that we must use functions<br />
+which return multiple values. That’s the key.</p>
+
+<p>I go through many examples of this analogy: multiplication of<br />
+complex numbers, Pauli matrices, Fibonacci-like sequences.<br />
+If you have problems understanding mutual recursion (like<br />
+everyone does) then you can work through these examples.</p>
+
+<p>The article is here:</p>
+
+<p><a href="/assets/inside-out.pdf">Inside-Out (pdf, DRAFT 1)</a></p>
+
+<p>It is a rough draft, so there are probably many typos and<br />
+incoherencies. But the material and the ideas are there.</p>
+
+<p>The code is here:</p>
+
+<p><a href="https://github.com/tedszy/inside-out">inside-out</a></p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/bellman"><h3 class="contrast">Bellman-Ford solver</h3></a>
+          <!--
+          <br><span class="smaller">March 24, 2016</span>  <br/>
+          -->
+          <div><p>The Bellman-Ford algorithm finds the minimum (or maximum) cost paths through a graph. <a href="https://github.com/tedszy/spst">Simple Problem Solving Tools</a> has an implementation of the Bellman-Ford algorithm. Let’s demonstrate it a problem from from cmu.edu. The task is to find the path with the least cost that goes from node <code>0</code>  to node <code>9</code>.</p>
+
+<div><img class="fullwidth" src="/assets/img/graph2.jpg" /></div>
+<p><span class="marginnote"></span></p>
+
+<p>The Bellman-Ford algorithm actually finds the minimum cost path from some source node (in this case node <code>0</code>) to all other nodes. By adding the key argument <code>:show-steps t</code> we can make the Bellman-Ford solver output tables of all the intermediate steps, i.e., the distance table and the predecessor table.</p>
+
+<p>First we use Quicklisp to load The Simple Problem Solving Tools. Clone the spst repo into <code>quicklisp/local-projects</code> and then:</p>
+
+<pre><code>   &gt; (ql:quickload :spst)
+   &gt; (in-package :spst)
+</code></pre>
+
+<p>Now, write a list of nodes and another list of weighted edges corresponding to the edges in the graph. Use these lists to create a graph object. The paths of interest start at <code>0</code>. That will be the source node.</p>
+
+<pre><code>   SPST&gt; (defparameter nodes-cmu '(0 1 2 3 4 6 8 9 12 15))
+
+   SPST&gt; (defparameter edges-cmu
+           '((0 8 1) (1 3 12) (1 6 2) (2 1 22) (2 8 8) 
+             (2 15 6) (3 2 4) (4 1 3) (6 3 18) (8 3 7) 
+             (9 0 11) (9 12 5) (12 9 14) (12 2 16) 
+             (15 12 3) (15 1 9) (15 4 5)))
+
+   SPST&gt; (defparameter g-cmu
+           (make-graph-with-weighted-edges nodes-cmu 
+                                           edges-cmu))
+
+</code></pre>
+
+<p>We can now get the distance and predecessor tables. This is a good way to check if you have been doing it right, and a good way for someone like me to make up more such hand-calculation graph problems for you to do.</p>
+
+<pre><code>  SPST&gt; (bellman-ford g-cmu 0 :show-steps t)
+distance table:
+    0     1     2     3     4     6     8     9    12    15
+    0   NIL   NIL     8   NIL   NIL     1   NIL   NIL   NIL
+    0   NIL    12     8   NIL   NIL     1   NIL   NIL   NIL
+    0    27    12     8    23   NIL     1   NIL    21    18
+    0    26    12     8    23    29     1    35    21    18
+    0    26    12     8    23    28     1    35    21    18
+
+predecessor table:
+    0     1     2     3     4     6     8     9    12    15
+  NIL   NIL   NIL     8   NIL   NIL     0   NIL   NIL   NIL
+  NIL   NIL     3     8   NIL   NIL     0   NIL   NIL   NIL
+  NIL    15     3     8    15   NIL     0   NIL    15     2
+  NIL     4     3     8    15     1     0    12    15     2
+  NIL     4     3     8    15     1     0    12    15     2
+</code></pre>
+
+<p>That’s nice but what if we want to get the actual path from node <code>0</code> to node <code>9</code>? The function <code>optimal-path</code> decodes this from the information in the hash-table returned by <code>bellman-ford</code>:</p>
+
+<pre><code>   SPST&gt; (optimal-path 9 (bellman-ford g-cmu 0))
+   (0 8 3 2 15 12 9)
+</code></pre>
+
+<p>And there we have it. The cost of the best route from <code>0</code> to <code>9</code> is 35, and the route itself goes like so:</p>
+
+<pre><code>   0 -&gt; 8 -&gt; 3 -&gt; 2 -&gt; 15 -&gt; 12 -&gt; 9.
+</code></pre>
+
+<p>The Bellman-Ford code is here:  <a href="https://github.com/tedszy/spst/blob/master/graphs.lisp">graphs.lisp</a></p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/pytuple"><h3 class="contrast">Searching the Tree of Pythagorean Tuples</h3></a>
+          <!--
+          <br><span class="smaller">March 19, 2016</span>  <br/>
+          -->
+          <div><p>A primitive pythagorean tuple is a tuple of three integers <code>(a,b,c)</code> such that <code>(a,b) = (b,c) = (c,a) = 1</code>, <code>a^2 + b^2 = c^2</code>, and <code>b</code> is even.</p>
+
+<p>Starting with the first primitive tuple, (3,4,5), all others can be generated by applying the Barning matrices <code>A</code>, <code>B</code>, and <code>C</code>:</p>
+
+<pre><code>A = [1 -2 2      B = [1 2 2      C = [-1 2 2 
+     2 -1 2           2 1 2           -2 1 2 
+     2 -2 3]          2 2 3]          -2 2 3]
+</code></pre>
+
+<p>This process generates a ternary tree beginning at the root tuple <code>(3,4,5)</code>. For example,</p>
+
+<pre><code>(A^4)(B^3)(ABC)^2 * (3,4,5) 
+	= (10764945, 55503968, 56538257)
+</code></pre>
+<p>which is in fact a primitive Pythagorean tuple, one of the nodes in the tree. Let’s try this using the <a href="https://github.com/tedszy/spst">Simple Problem Solving Tools</a> package.</p>
+
+<pre><code class="language-common-lisp">&gt; (in-package :spst)
+SPST&gt; (follow-path '(A A A A B B B A B C A B C))
+(32033617, 14757744, 35269585 =&gt; (A A A A B B B A B C A B C))
+
+</code></pre>
+
+<p>But we could ask the question the other way around. Given a Pythagorean tuple, what is the path that we must take through the tree in order to arrive at it?</p>
+
+<pre><code class="language-cl">SPST&gt; (depth-search-pytree 
+       :search-for #'(lambda (pt) (with-slots (a b c) pt
+				    (and (= a 32033617)
+					 (= b 14757744)
+					 (= c 35269585))))
+       :limit (lambda (pt) (with-slots (a b c) pt
+			     (&lt;= c 36000000)))
+       :with-path t)
+((32033617, 14757744, 35269585 =&gt; (A A A A B B B A B C A B C)))
+5729606
+</code></pre>
+
+<p>The procedute also returned the number of tuples searched: 5,729,606 of them. We can also search without compiling path information, saving lots of memory. Consider the following problem. Suppose <code>(a,b,c)</code> is a primitive Pythagorean tuple. Is there a larger primitive tuple <code>(e,f,g)</code> that is elementwise divisible by <code>(a,b,c)</code>? In other words, does there exist tuples <code>(e,f,g)</code> such that <code>a|e, b|g, c|g</code>? Let’s find out. Consider <code>(a,b,c) = (115, 252, 277)</code>. We will search up to a limit of <code>c &lt;= 10,000,000</code>, but we will not calculate path information this time.</p>
+
+<pre><code class="language-cl">SPST&gt; (depth-search-pytree 
+       :search-for #'(lambda (pt) 
+		       (with-slots (a b c) pt
+			 (and (= 0 (mod a 115))
+			      (= 0 (mod b 252))
+			      (= 0 (mod c 277)))))
+       :limit #'(lambda (pt) 
+		  (with-slots (a b c) pt
+		    (&lt;= c 10000000)))
+       :with-path nil)
+((5253545, 7823592, 9423817) 
+ (6998095, 4000752, 8060977)
+ (7607825, 2664648, 8060977) 
+ (9352375, 1158192, 9423817) 
+ (115, 252, 277))
+1591579
+</code></pre>
+
+<p>After searching almost 1.6 million of them, we found some tuples that meet the criteria! I’m sure you can think of many more such interesting ways to query the tree of Pythagorean tuples. If you want to see the code that does all this, it’s right here:</p>
+
+<p><a href="https://github.com/tedszy/spst/blob/master/tuple-trees.lisp">tuple-trees.lisp</a></p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/rational-geometry"><h3 class="contrast">Rational Geometry with Racket</h3></a>
+          <!--
+          <br><span class="smaller">March 16, 2016</span>  <br/>
+          -->
+          <div><p><span class="newthought">Points and lines</span>  can take you a long way<br />
+in geometry. Here is all the material covered in the<br />
+Racket geometry topic, plus more. There are many more<br />
+problems and studies (mostly projective type stuff) and<br />
+the code makes use of some Racket features you might not<br />
+have seen before (match-let).</p>
+
+<p>The article includes all the code that you need too.<br />
+All you have to do is install Racket and follow along.</p>
+
+<p><a href="/assets/rational-geometry.pdf">Rational Geometry with Racket (pdf)</a></p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/amir"><h3 class="contrast">The Amir Problem</h3></a>
+          <!--
+          <br><span class="smaller">February 14, 2016</span>  <br/>
+          -->
+          <div><p><span class="newthought">The Amir problem</span>  was proposed to me a long time ago by an <br />
+engineering student named Amir. Suppose you have a lottery based <br />
+on drawing 6 numbers from a set of 49 numbers. How many such <br />
+combinations do you need in order to guarantee that the outcome <br />
+will always score at least 3 numbers out of the winning draw of 6?</p>
+
+<p>Here is a brute-force solution. Generate all 13,983,816 <br />
+combinations of 6 objects chosen from a set of 49. Go through <br />
+them one at time. Add a combination to the solution set if it <br />
+does not have more that two objects in common with any other <br />
+combination in the solution set. If you do this you’re likely<br />
+to get a solution set with about 450 combinations.</p>
+
+<p>The interesting thing about this problem is that the size of<br />
+the solution set (we can call it the Amir set) depends on the<br />
+order in which you examine and add the combinations. If you<br />
+shuffle the vector of 13.9 million combinations and then build<br />
+an Amir set, you can get, say, 400 elements or 550 elements for<br />
+example. What is the smallest possible Amir set? What is the <br />
+largest possible Amir set? I don’t know yet.</p>
+
+<p>For a long time, the smallest Amir set I found was around 360<br />
+combinations. But recently, by means of a new trick, I happend<br />
+to find one that is only 241 combinations. How low can it go?</p>
+
+<p>To do experiments with Amir sets, we need some fast code, <br />
+so this calls for C++. Combinations are represented by <br />
+the first 49 bits of 64-bit integers with popcount 6. They <br />
+are compared using Kernighan’s popcount algorithm, which for <br />
+this particular application is the fastest way I have yet found. <br />
+The original Amir program was written in Matlab and it took <br />
+something like ten days (!) to finish on an old Intel Pentium. <br />
+But today, with C++ and bit-hacking, a typical Amir set can be <br />
+computed on average hardware in about 1 second.</p>
+
+<p><a href="https://github.com/tedszy/more-fun-to-compute/tree/master/amir">Amir code</a>.</p>
+
+<p>You can play with the order in which the combinations are <br />
+evaluated, and with the way that the Amir set is seeded. <br />
+Try to find an Amir set smaller than 241 elements. Let me <br />
+know if you do.</p>
+
+<p>The Amir project has some Common Lisp code for generating a <br />
+latex/tikz graphic representing an Amir set. Each element of <br />
+an Amir set is a popcount 6 number in a 49-bit field, so each <br />
+one can be represented as a path through a lattice: 1 is up <br />
+and 0 is to the right. Below is the visualization of the 241 <br />
+element Amir set.</p>
+
+<div><img class="fullwidth" src="assets/img/amir-241.png" /></div>
+<p><span class="marginnote"></span></p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/16/quaternion"><h3 class="contrast">What are Quaternions?</h3></a>
+          <!--
+          <br><span class="smaller">January 4, 2016</span>  <br/>
+          -->
+          <div><p>A concise definition goes like this: a quaternion <code>q</code> is a linear combination</p>
+
+<pre><code>q = w + xi + yj + zk
+</code></pre>
+<p>where <code>ij = k</code>, <code>jk = i</code>, <code>ki = j</code> and  <code>ijk = -1</code>. But perhaps this doesn’t give us much of a feeling about what quaternions are supposed to be. Is there a way of understanding them without resorting to the imaginaries <code>i, j, k</code>? In fact Hamilton himself preferred to avoid  <code>i, j, k</code> as much as possibe when talking about quaternions. This article presents a particular way of introducing the quaternion idea without <code>i, j, k</code>.</p>
+
+<p><a href="/assets/quaternion.pdf">Thinking about Quaternions (pdf)</a></p>
+
+<p>The article also addresses the peculiar question: can you add a number to a vector, and if so, what do you get?</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/15/euclidean"><h3 class="contrast">Generalized Euclidean Algorithm</h3></a>
+          <!--
+          <br><span class="smaller">November 8, 2015</span>  <br/>
+          -->
+          <div><p>With the Euclidean algorithm, you can compute GCDs and<br />
+continued fractions. But with the generalized Euclidean<br />
+algorithm you can also change radix and compute integer<br />
+square roots, among other things. Watch how this is done. <br />
+This module includes the Fermat factorization code I used <br />
+to design test questions and class problems. Now you can <br />
+use it too.</p>
+
+<p><a href="https://github.com/tedszy/functional-workout/blob/master/gen-euclidean.rkt">gen-euclidean.rkt</a>.</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/15/polygonal"><h3 class="contrast">Polygonal numbers</h3></a>
+          <!--
+          <br><span class="smaller">October 29, 2015</span>  <br/>
+          -->
+          <div><p>Can a number be both square and triangular? It turns out that this <br />
+is a very interesting question with lots of depth. Here is a nice<br />
+introduction for you:</p>
+
+<p><a href="/assets/polygonal_numbers.pdf">Polygonal Numbers (pdf)</a>.</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/15/church"><h3 class="contrast">Making numbers with lambda</h3></a>
+          <!--
+          <br><span class="smaller">October 28, 2015</span>  <br/>
+          -->
+          <div><p>The lambda idea is powerful. It can even be used<br />
+to define fundamental things like integers. I know<br />
+what you are thinking: this must be a horribly<br />
+inefficient way of working with integers. Yes, it is,<br />
+compared to native integer operations supported by the<br />
+CPU. But the same lambda-techniques can be applied to<br />
+abstractions that are not supported directly by the CPU.<br />
+Suddenly lambdas become a competitive way to model, say,<br />
+group elements or objects in geometry.</p>
+
+<p>Whatever the case, Church numerals are a great<br />
+example of the power that lambdas have for expressing<br />
+abstract ideas. Here is a simple implementation of<br />
+Church numeras, inspired by <a href="http://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1">SICP exercise 2.6</a>.</p>
+
+<p><a href="https://github.com/tedszy/functional-workout/blob/master/church-numerals.rkt">church-numerals.rkt</a>.</p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/15/taxicab"><h3 class="contrast">Ramanujan taxi-cab numbers</h3></a>
+          <!--
+          <br><span class="smaller">October 4, 2015</span>  <br/>
+          -->
+          <div><p>Hardy’s famous story about Ramanujan goes:</p>
+
+<blockquote>
+  <p><em>“I remember once going to see him when he was ill at Putney. <br />
+I had ridden in taxi cab number 1729 and remarked that the <br />
+number seemed to me rather a dull one, and that I hoped it <br />
+was not an unfavorable omen. “No,” he replied, “it is a very <br />
+interesting number; it is the smallest number expressible as <br />
+the sum of two cubes in two different ways.”</em></p>
+</blockquote>
+
+<p>How did Ramanujan know this? Was he right? In this little project <br />
+we use Racket to examine 1729 and look for other numbers with <br />
+similar properties: <a href="https://github.com/tedszy/functional-workout/blob/master/ramanujan-taxi-cab.rkt">ramanujan-taxi-cab.rkt</a></p>
+
+</div> 
+        </li>
+          
+        <li class="listing">
+          <hr class="slender">
+          <a href="/articles/15/products-and-sums-mod-m"><h3 class="contrast">Sums and products mod m</h3></a>
+          <!--
+          <br><span class="smaller">October 3, 2015</span>  <br/>
+          -->
+          <div><p>Two numbers cannot have both an odd sum and an odd product.<br />
+This simple fact of arithmetic has some interesting generalizations.<br />
+We examine some of them in this Racket exercise: <a href="https://github.com/tedszy/functional-workout/blob/master/mod-prod-sum.rkt">mod-prod-sum.rkt</a>.</p>
+
+</div> 
+        </li>
+    
+  </ul>
+
+
+    </article>
+    <span class="print-footer">Tedszy - Ted Szylowiec</span>
+    <footer>
+  <ul class="footer-links group">
+   <!-- 
+   <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
+   -->
+    
+      <li>
+        <a href="//github.com/tedszy"><span class="icon-github"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2016 &nbsp;&nbsp;TED SZYLOWIEC</span></br> 
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for Mathematics Teaching </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

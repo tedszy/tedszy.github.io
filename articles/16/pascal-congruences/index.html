@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Even and odd sized subsets and more</title>
+  <meta name="description" content="Consider a set  of size n. How many even-sized subsetsdoes it have, and how many odd-sized subsets does it have?Another way to phrase this question is: how m...">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here -->
+  <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="/articles/16/pascal-congruences">
+  <link rel="alternate" type="application/rss+xml" title="The Proof Chef" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+		<a href="/"><img class="badge" src="/assets/img/lambda-parens-logo.jpg" alt="New"></a>
+		<a href="/">Notebook</a>
+		<a href="/page">Books and Articles</a>
+		<a href="/page/code.html">Code</a>
+		<a href="/about">About Tedszy</a>
+	</nav>
+</header>
+
+    <article>
+      <h1>Even and odd sized subsets and more</h1>
+<p>July 3, 2016</p>
+
+
+<p><span class="newthought">Consider a set</span>  of size <code>n</code>. How many even-sized subsets<br />
+does it have, and how many odd-sized subsets does it have?<br />
+Another way to phrase this question is: how many <code>k</code>-subsets<br />
+are there when <code>k=0 mod 2</code>, and how many are there<br />
+when <code>k=1 mod 2</code>?</p>
+
+<p>One way of computing this is to take the <code>n</code>th row of<br />
+Pascal’s triangle and add up all the counts for <code>k=0 mod 2</code><br />
+and then for <code>k=1 mod 2</code>. I have written some functions<br />
+that do this in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a>. To use this module, you will also<br />
+need <a href="https://github.com/tedszy/functional-workout/blob/master/grid.rkt">grid.rkt</a>.</p>
+
+<pre><code>-&gt; (subset-count-congruence-table 2 7)
+n         =0     =1  
+-----  -----  -----  
+0          1      0  
+1          1      1  
+2          2      2  
+3          4      4  
+4          8      8  
+5         16     16  
+6         32     32  
+</code></pre>
+
+<p>So, a set of 6 elements has 32 odd-sized subsets and<br />
+32 even-sized subsets. Let’s abstract away the numbers<br />
+and look at only the patterns.</p>
+
+<pre><code>n         =0     =1  
+-----  -----  -----  
+0          1      0
+1          =      =  
+2          =      =  
+3          =      =  
+4          =      =  
+5          =      =  
+6          =      =  
+</code></pre>
+
+<p>For <code>n &gt; 0</code> the pattern repeats itself with a period of 1. There<br />
+are always as many even-sized subsets as odd-sized. Since<br />
+the total number of subsets is <code>2^n</code>, it must be that there<br />
+are <code>2^(n-1)</code> odd-sized (or even-sized) subsets.</p>
+
+<p>And now we see why rephrasing the question in terms of modular<br />
+arithmetic is productive. It is immediately natural to ask: what<br />
+about other moduli? What about the number of subsets with size<br />
+divisible by three? And so on. The code in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> handles<br />
+any modulus. Let’s try mod 3.</p>
+
+<pre><code>-&gt; (subset-count-congruence-table 3 13)
+n         =0     =1     =2  
+-----  -----  -----  -----  
+0          1      0      0  
+1          1      1      0  
+2          1      2      1  
+3          2      3      3  
+4          5      5      6  
+5         11     10     11  
+6         22     21     21  
+7         43     43     42  
+8         85     86     85  
+9        170    171    171  
+10       341    341    342  
+11       683    682    683  
+12      1366   1365   1365  
+</code></pre>
+
+<p>Let’s abstract away the numbers and keep the patterns.<br />
+There are always two entries that are equal. The third<br />
+is either greater by 1 or less by 1.</p>
+
+<pre><code>n         =0     =1     =2  
+-----  -----  -----  -----  
+0         +1      =      =
+1          =      =     -1
+2          =     +1      =
+3         -1      =      =  
+4          =      =     +1  
+5          =     -1      =  
+6         +1      =      =
+7          =      =     -1  
+8          =     +1      =  
+9         -1      =      =
+10         =      =     +1  
+11         =     -1      =
+12        +1      =      =
+</code></pre>
+
+<p>The pattern repeats itself after 6 rows. The period is 6.<br />
+What about other moduli, such as mod 4 or mod 5?<br />
+The code module <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> saves us the pain of<br />
+computing the necessary tables. Here is a table for mod 4.</p>
+
+<pre><code>-&gt; (subset-count-congruence-table 4 11)
+n         =0     =1     =2     =3  
+-----  -----  -----  -----  -----  
+0          1      0      0      0  
+1          1      1      0      0  
+2          1      2      1      0  
+3          1      3      3      1  
+4          2      4      6      4  
+5          6      6     10     10  
+6         16     12     16     20  
+7         36     28     28     36  
+8         72     64     56     64  
+9        136    136    120    120  
+10       256    272    256    240  
+</code></pre>
+
+<p>Clearly there is a pattern here, but it’s more complicated.<br />
+Does the pattern (whatever it may be) repeat itself? What is<br />
+the period for mod 4? What about mod 5, etc? There is plenty<br />
+of opportunity for you to do some interesting research here!<br />
+Use <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> and <a href="https://github.com/tedszy/functional-workout/blob/master/grid.rkt">grid.rkt</a> and be creative!</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Even and odd sized subsets and more - July 3, 2016 - Ted Szylowiec</span>
+    <footer>
+  <ul class="footer-links group">
+   <!-- 
+   <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
+   -->
+    
+      <li>
+        <a href="//github.com/tedszy"><span class="icon-github"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2017 &nbsp;&nbsp;TED SZYLOWIEC</span></br> 
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for Mathematics Teaching </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

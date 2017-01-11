@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Subsets and Cartesian Products</title>
+  <meta name="description" content="Computing subsets and Cartesian products  are common tasks you are faced with when trying to solve problems by computer programming. And common advice you ge...">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here -->
+  <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="/articles/16/cartesian">
+  <link rel="alternate" type="application/rss+xml" title="The Proof Chef" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+		<a href="/"><img class="badge" src="/assets/img/lambda-parens-logo.jpg" alt="New"></a>
+		<a href="/">Notebook</a>
+		<a href="/page">Books and Articles</a>
+		<a href="/page/code.html">Code</a>
+		<a href="/about">About Tedszy</a>
+	</nav>
+</header>
+
+    <article>
+      <h1>Subsets and cartesian products</h1>
+<p>September 15, 2016</p>
+
+
+<p><span class="newthought">Computing subsets and Cartesian products</span>  are common <br />
+tasks you are faced with when trying to solve problems by computer <br />
+programming. And common advice you get is to do these things by <br />
+recursion or, in the case of Cartesian products, by Lisp macros.<br />
+But we don’t want to do them that way.</p>
+
+<h4 id="subsets">1. Subsets</h4>
+
+<p>A typical Scheme formula for computing subsets uses recursion. But<br />
+suppose you are looking for something among the subsets of a large<br />
+set. What if you have billions of subsets and you want to iterate over<br />
+them one at a time? Well forget the usual recursive solutions. We are<br />
+going to use bit-hacking on integers.</p>
+
+<p>Every subset of a set can be represented by a binary code. For <br />
+example consider the set <code>{A,B,C,D,E}</code>. If we set <code>0</code> to<br />
+mean “don’t choose the element” and <code>1</code> to mean “choose the<br />
+element”, then the subset <code>{A,C,E}</code> can be represented<br />
+by the binary code <code>10101</code>:</p>
+
+<pre><code>A B C D E
+1`0 1 0 1
+---------
+A   C   E
+</code></pre>
+
+<p>This leads to a good idea! If we take any integer less than <code>2^5</code><br />
+and we extract the bits using arithmetic right shift, we can decode<br />
+which elements are chosen for the subset and which are rejected.<br />
+Looping through all such numbers gives us all possible subsets.</p>
+
+<pre><code class="language-cl">(defun subsets (myset)
+  (loop for k from 0 below (expt 2 (length myset))
+     collecting (loop for s in myset
+		   with subset = nil
+		   with bitfield = k
+		   do (when (= 1 (logand bitfield 1))
+			(push s subset))
+		     (setf bitfield (ash bitfield -1))
+		   finally (return subset))))
+</code></pre>
+
+<p>We test if the last bit is 1 by doing bitwise-<code>and</code> with 1. Then we <br />
+right-shift to get the next bit, and so on. We know that there will <br />
+be <code>2^n</code> subsets, so we know when to stop. This way of doing it <br />
+allows some easy modifications. For instance, if you don’t want the <br />
+empty set, just start iterating from <code>k=1</code> instead of <code>k=0.</code> What <br />
+could possibly be easier than this? No need for mind-bending <br />
+inefficient recursion. Illustration:</p>
+
+<pre><code class="language-cl">&gt; (subsets '(a b c d))
+(NIL (A) (B) (B A) (C) (C A) (C B) (C B A) (D) (D A) 
+(D B) (D B A) (D C) (D C A) (D C B) (D C B A))
+</code></pre>
+
+<h4 id="cartesian-products">2. Cartesian Products</h4>
+
+<p>Suppose we have three lists of number <code>(2 3 5)</code>, <code>(7 11 13)</code> <br />
+and <code>(17 19 23).</code> We want to form all possible products obtained by <br />
+choosing one number from each list. No problem, you say, you’ll just <br />
+use nested loops, one loop for each list. But that works only if you <br />
+know you will have exactly three lists of numbers. What if you have <br />
+<code>n</code> lists of numbers? Then what? Recursion? I’ve seen it done that <br />
+way. Macros? Yes, incredible as it sounds, I’ve seen macros that <br />
+generate <code>n</code> nested loops to do this job.</p>
+
+<p>But none of such things are necessary when there exists a perfectly <br />
+good functional programming idiom tailor-made for these kind of <br />
+jobs: <code>reduce</code>!</p>
+
+<pre><code class="language-cl">(defun cartesian (list-of-lists)
+  (reduce #'(lambda (u v)
+	      (loop for i in u 
+                 nconc (loop for j in v collect (* i j))))
+	  list-of-lists))
+</code></pre>
+
+<p>The <code>lambda</code> function takes two lists and does a Cartesian product,<br />
+concatenating all the results into one big list. Further Cartesian <br />
+products are accumulated into this list by <code>reduce</code> as it traverses <br />
+down the <code>list-of-lists.</code> There, a simple functional way <br />
+of doing it. Illustration:</p>
+
+<pre><code class="language-cl">&gt;(cartesian '((2 3 5) (7 11 13) (17 19 23)))
+(238 266 322 374 418 506 442 494 598 357 399 483 561 627 
+ 759 663 741 897 595 665 805 935 1045 1265 1105 1235 1495)
+</code></pre>
+
+<p>A example of an application for Cartesian product is to compute <br />
+all the divisors of a number when the prime factorization is known.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Subsets and Cartesian Products - September 15, 2016 - Ted Szylowiec</span>
+    <footer>
+  <ul class="footer-links group">
+   <!-- 
+   <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
+   -->
+    
+      <li>
+        <a href="//github.com/tedszy"><span class="icon-github"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2017 &nbsp;&nbsp;TED SZYLOWIEC</span></br> 
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for Mathematics Teaching </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Bellman-Ford solver</title>
+  <meta name="description" content="The Bellman-Ford algorithm finds the minimum (or maximum) cost paths through a graph. Simple Problem Solving Tools has an implementation of the Bellman-Ford ...">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here -->
+  <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="/articles/16/bellman">
+  <link rel="alternate" type="application/rss+xml" title="The Proof Chef" href="/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+		<a href="/"><img class="badge" src="/assets/img/lambda-parens-logo.jpg" alt="New"></a>
+		<a href="/">Notebook</a>
+		<a href="/page">Books and Articles</a>
+		<a href="/page/code.html">Code</a>
+		<a href="/about">About Tedszy</a>
+	</nav>
+</header>
+
+    <article>
+      <h1>Bellman-ford solver</h1>
+<p>March 24, 2016</p>
+
+
+<p>The Bellman-Ford algorithm finds the minimum (or maximum) cost paths through a graph. <a href="https://github.com/tedszy/spst">Simple Problem Solving Tools</a> has an implementation of the Bellman-Ford algorithm. Let’s demonstrate it a problem from from cmu.edu. The task is to find the path with the least cost that goes from node <code>0</code>  to node <code>9</code>.</p>
+
+<div><img class="fullwidth" src="/assets/img/graph2.jpg" /></div>
+<p><span class="marginnote"></span></p>
+
+<p>The Bellman-Ford algorithm actually finds the minimum cost path from some source node (in this case node <code>0</code>) to all other nodes. By adding the key argument <code>:show-steps t</code> we can make the Bellman-Ford solver output tables of all the intermediate steps, i.e., the distance table and the predecessor table.</p>
+
+<p>First we use Quicklisp to load The Simple Problem Solving Tools. Clone the spst repo into <code>quicklisp/local-projects</code> and then:</p>
+
+<pre><code>   &gt; (ql:quickload :spst)
+   &gt; (in-package :spst)
+</code></pre>
+
+<p>Now, write a list of nodes and another list of weighted edges corresponding to the edges in the graph. Use these lists to create a graph object. The paths of interest start at <code>0</code>. That will be the source node.</p>
+
+<pre><code>   SPST&gt; (defparameter nodes-cmu '(0 1 2 3 4 6 8 9 12 15))
+
+   SPST&gt; (defparameter edges-cmu
+           '((0 8 1) (1 3 12) (1 6 2) (2 1 22) (2 8 8) 
+             (2 15 6) (3 2 4) (4 1 3) (6 3 18) (8 3 7) 
+             (9 0 11) (9 12 5) (12 9 14) (12 2 16) 
+             (15 12 3) (15 1 9) (15 4 5)))
+
+   SPST&gt; (defparameter g-cmu
+           (make-graph-with-weighted-edges nodes-cmu 
+                                           edges-cmu))
+
+</code></pre>
+
+<p>We can now get the distance and predecessor tables. This is a good way to check if you have been doing it right, and a good way for someone like me to make up more such hand-calculation graph problems for you to do.</p>
+
+<pre><code>  SPST&gt; (bellman-ford g-cmu 0 :show-steps t)
+distance table:
+    0     1     2     3     4     6     8     9    12    15
+    0   NIL   NIL     8   NIL   NIL     1   NIL   NIL   NIL
+    0   NIL    12     8   NIL   NIL     1   NIL   NIL   NIL
+    0    27    12     8    23   NIL     1   NIL    21    18
+    0    26    12     8    23    29     1    35    21    18
+    0    26    12     8    23    28     1    35    21    18
+
+predecessor table:
+    0     1     2     3     4     6     8     9    12    15
+  NIL   NIL   NIL     8   NIL   NIL     0   NIL   NIL   NIL
+  NIL   NIL     3     8   NIL   NIL     0   NIL   NIL   NIL
+  NIL    15     3     8    15   NIL     0   NIL    15     2
+  NIL     4     3     8    15     1     0    12    15     2
+  NIL     4     3     8    15     1     0    12    15     2
+</code></pre>
+
+<p>That’s nice but what if we want to get the actual path from node <code>0</code> to node <code>9</code>? The function <code>optimal-path</code> decodes this from the information in the hash-table returned by <code>bellman-ford</code>:</p>
+
+<pre><code>   SPST&gt; (optimal-path 9 (bellman-ford g-cmu 0))
+   (0 8 3 2 15 12 9)
+</code></pre>
+
+<p>And there we have it. The cost of the best route from <code>0</code> to <code>9</code> is 35, and the route itself goes like so:</p>
+
+<pre><code>   0 -&gt; 8 -&gt; 3 -&gt; 2 -&gt; 15 -&gt; 12 -&gt; 9.
+</code></pre>
+
+<p>The Bellman-Ford code is here:  <a href="https://github.com/tedszy/spst/blob/master/graphs.lisp">graphs.lisp</a></p>
+
+
+
+
+    </article>
+    <span class="print-footer">Bellman-Ford solver - March 24, 2016 - Ted Szylowiec</span>
+    <footer>
+  <ul class="footer-links group">
+   <!-- 
+   <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
+   -->
+    
+      <li>
+        <a href="//github.com/tedszy"><span class="icon-github"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2017 &nbsp;&nbsp;TED SZYLOWIEC</span></br> 
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for Mathematics Teaching </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
