@@ -56,6 +56,13 @@
 
 <p><a href="/assets/m2-2017-2.pdf">M2 training problems</a></p>
 
+<p>Next is a collection of all the dimensional analysis<br />
+problems I did with M1, M2 and M3. Try to do whatever<br />
+you can do, you probably can’t do all of them if those<br />
+topics weren’t covered in your class. If you can’t do<br />
+a problem, move on to the next one.</p>
+
+<p><a href="/assets/DA.pdf">Dimensional analysis training problems</a></p>
 </div> 
         </li>
           
@@ -104,78 +111,83 @@ them one at a time? Well forget the usual recursive solutions. We are<br />
 going to use bit-hacking on integers.</p>
 
 <p>Every subset of a set can be represented by a binary code. For <br />
-example consider the set <code>{A,B,C,D,E}</code>. If we set <code>0</code> to<br />
-mean “don’t choose the element” and <code>1</code> to mean “choose the<br />
-element”, then the subset <code>{A,C,E}</code> can be represented<br />
-by the binary code <code>10101</code>:</p>
+example consider the set <code class="highlighter-rouge"><span class="p">{</span><span class="err">A,B,C,D,E</span><span class="p">}</span></code>. If we set <code class="highlighter-rouge">0</code> to<br />
+mean “don’t choose the element” and <code class="highlighter-rouge">1</code> to mean “choose the<br />
+element”, then the subset <code class="highlighter-rouge"><span class="p">{</span><span class="err">A,C,E</span><span class="p">}</span></code> can be represented<br />
+by the binary code <code class="highlighter-rouge">10101</code>:</p>
 
-<pre><code>A B C D E
+<div class="highlighter-rouge"><pre class="highlight"><code>A B C D E
 1`0 1 0 1
 ---------
 A   C   E
 </code></pre>
+</div>
 
-<p>This leads to a good idea! If we take any integer less than <code>2^5</code><br />
+<p>This leads to a good idea! If we take any integer less than <code class="highlighter-rouge">2^5</code><br />
 and we extract the bits using arithmetic right shift, we can decode<br />
 which elements are chosen for the subset and which are rejected.<br />
 Looping through all such numbers gives us all possible subsets.</p>
 
-<pre><code class="language-cl">(defun subsets (myset)
-  (loop for k from 0 below (expt 2 (length myset))
-     collecting (loop for s in myset
-		   with subset = nil
-		   with bitfield = k
-		   do (when (= 1 (logand bitfield 1))
-			(push s subset))
-		     (setf bitfield (ash bitfield -1))
-		   finally (return subset))))
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">subsets</span> <span class="p">(</span><span class="nv">myset</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">k</span> <span class="nv">from</span> <span class="mi">0</span> <span class="nv">below</span> <span class="p">(</span><span class="nb">expt</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">myset</span><span class="p">))</span>
+     <span class="nv">collecting</span> <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">s</span> <span class="nv">in</span> <span class="nv">myset</span>
+		   <span class="nv">with</span> <span class="nv">subset</span> <span class="nb">=</span> <span class="no">nil</span>
+		   <span class="nv">with</span> <span class="nv">bitfield</span> <span class="nb">=</span> <span class="nv">k</span>
+		   <span class="nb">do</span> <span class="p">(</span><span class="nb">when</span> <span class="p">(</span><span class="nb">=</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">logand</span> <span class="nv">bitfield</span> <span class="mi">1</span><span class="p">))</span>
+			<span class="p">(</span><span class="nb">push</span> <span class="nv">s</span> <span class="nv">subset</span><span class="p">))</span>
+		     <span class="p">(</span><span class="nb">setf</span> <span class="nv">bitfield</span> <span class="p">(</span><span class="nb">ash</span> <span class="nv">bitfield</span> <span class="mi">-1</span><span class="p">))</span>
+		   <span class="nv">finally</span> <span class="p">(</span><span class="nb">return</span> <span class="nv">subset</span><span class="p">))))</span>
 </code></pre>
+</div>
 
-<p>We test if the last bit is 1 by doing bitwise-<code>and</code> with 1. Then we <br />
+<p>We test if the last bit is 1 by doing bitwise-<code class="highlighter-rouge">and</code> with 1. Then we <br />
 right-shift to get the next bit, and so on. We know that there will <br />
-be <code>2^n</code> subsets, so we know when to stop. This way of doing it <br />
+be <code class="highlighter-rouge">2^n</code> subsets, so we know when to stop. This way of doing it <br />
 allows some easy modifications. For instance, if you don’t want the <br />
-empty set, just start iterating from <code>k=1</code> instead of <code>k=0.</code> What <br />
+empty set, just start iterating from <code class="highlighter-rouge">k=1</code> instead of <code class="highlighter-rouge">k=0.</code> What <br />
 could possibly be easier than this? No need for mind-bending <br />
 inefficient recursion. Illustration:</p>
 
-<pre><code class="language-cl">&gt; (subsets '(a b c d))
-(NIL (A) (B) (B A) (C) (C A) (C B) (C B A) (D) (D A) 
-(D B) (D B A) (D C) (D C A) (D C B) (D C B A))
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">&gt;</span> <span class="p">(</span><span class="nv">subsets</span> <span class="o">'</span><span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span> <span class="nv">d</span><span class="p">))</span>
+<span class="p">(</span><span class="nv">NIL</span> <span class="p">(</span><span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nv">B</span><span class="p">)</span> <span class="p">(</span><span class="nv">B</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nv">C</span><span class="p">)</span> <span class="p">(</span><span class="nv">C</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nv">C</span> <span class="nv">B</span><span class="p">)</span> <span class="p">(</span><span class="nv">C</span> <span class="nv">B</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span> <span class="nv">A</span><span class="p">)</span> 
+<span class="p">(</span><span class="nv">D</span> <span class="nv">B</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span> <span class="nv">B</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span> <span class="nv">C</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span> <span class="nv">C</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span> <span class="nv">C</span> <span class="nv">B</span><span class="p">)</span> <span class="p">(</span><span class="nv">D</span> <span class="nv">C</span> <span class="nv">B</span> <span class="nv">A</span><span class="p">))</span>
 </code></pre>
+</div>
 
 <h4 id="cartesian-products">2. Cartesian Products</h4>
 
-<p>Suppose we have three lists of number <code>(2 3 5)</code>, <code>(7 11 13)</code> <br />
-and <code>(17 19 23).</code> We want to form all possible products obtained by <br />
+<p>Suppose we have three lists of number <code class="highlighter-rouge">(2 3 5)</code>, <code class="highlighter-rouge">(7 11 13)</code> <br />
+and <code class="highlighter-rouge">(17 19 23).</code> We want to form all possible products obtained by <br />
 choosing one number from each list. No problem, you say, you’ll just <br />
 use nested loops, one loop for each list. But that works only if you <br />
 know you will have exactly three lists of numbers. What if you have <br />
-<code>n</code> lists of numbers? Then what? Recursion? I’ve seen it done that <br />
+<code class="highlighter-rouge">n</code> lists of numbers? Then what? Recursion? I’ve seen it done that <br />
 way. Macros? Yes, incredible as it sounds, I’ve seen macros that <br />
-generate <code>n</code> nested loops to do this job.</p>
+generate <code class="highlighter-rouge">n</code> nested loops to do this job.</p>
 
 <p>But none of such things are necessary when there exists a perfectly <br />
 good functional programming idiom tailor-made for these kind of <br />
-jobs: <code>reduce</code>!</p>
+jobs: <code class="highlighter-rouge">reduce</code>!</p>
 
-<pre><code class="language-cl">(defun cartesian (list-of-lists)
-  (reduce #'(lambda (u v)
-	      (loop for i in u 
-                 nconc (loop for j in v collect (* i j))))
-	  list-of-lists))
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nb">defun</span> <span class="nv">cartesian</span> <span class="p">(</span><span class="nv">list-of-lists</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">reduce</span> <span class="nf">#'</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">u</span> <span class="nv">v</span><span class="p">)</span>
+	      <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">in</span> <span class="nv">u</span> 
+                 <span class="nb">nconc</span> <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">j</span> <span class="nv">in</span> <span class="nv">v</span> <span class="nv">collect</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">i</span> <span class="nv">j</span><span class="p">))))</span>
+	  <span class="nv">list-of-lists</span><span class="p">))</span>
 </code></pre>
+</div>
 
-<p>The <code>lambda</code> function takes two lists and does a Cartesian product,<br />
+<p>The <code class="highlighter-rouge">lambda</code> function takes two lists and does a Cartesian product,<br />
 concatenating all the results into one big list. Further Cartesian <br />
-products are accumulated into this list by <code>reduce</code> as it traverses <br />
-down the <code>list-of-lists.</code> There, a simple functional way <br />
+products are accumulated into this list by <code class="highlighter-rouge">reduce</code> as it traverses <br />
+down the <code class="highlighter-rouge">list-of-lists.</code> There, a simple functional way <br />
 of doing it. Illustration:</p>
 
-<pre><code class="language-cl">&gt;(cartesian '((2 3 5) (7 11 13) (17 19 23)))
-(238 266 322 374 418 506 442 494 598 357 399 483 561 627 
- 759 663 741 897 595 665 805 935 1045 1265 1105 1235 1495)
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">&gt;</span><span class="p">(</span><span class="nv">cartesian</span> <span class="o">'</span><span class="p">((</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span><span class="p">)</span> <span class="p">(</span><span class="mi">7</span> <span class="mi">11</span> <span class="mi">13</span><span class="p">)</span> <span class="p">(</span><span class="mi">17</span> <span class="mi">19</span> <span class="mi">23</span><span class="p">)))</span>
+<span class="p">(</span><span class="mi">238</span> <span class="mi">266</span> <span class="mi">322</span> <span class="mi">374</span> <span class="mi">418</span> <span class="mi">506</span> <span class="mi">442</span> <span class="mi">494</span> <span class="mi">598</span> <span class="mi">357</span> <span class="mi">399</span> <span class="mi">483</span> <span class="mi">561</span> <span class="mi">627</span> 
+ <span class="mi">759</span> <span class="mi">663</span> <span class="mi">741</span> <span class="mi">897</span> <span class="mi">595</span> <span class="mi">665</span> <span class="mi">805</span> <span class="mi">935</span> <span class="mi">1045</span> <span class="mi">1265</span> <span class="mi">1105</span> <span class="mi">1235</span> <span class="mi">1495</span><span class="p">)</span>
 </code></pre>
+</div>
 
 <p>A example of an application for Cartesian product is to compute <br />
 all the divisors of a number when the prime factorization is known.</p>
@@ -189,19 +201,19 @@ all the divisors of a number when the prime factorization is known.</p>
           <!--
           <br><span class="smaller">July 3, 2016</span>  <br/>
           -->
-          <div><p><span class="newthought">Consider a set</span>  of size <code>n</code>. How many even-sized subsets<br />
+          <div><p><span class="newthought">Consider a set</span>  of size <code class="highlighter-rouge">n</code>. How many even-sized subsets<br />
 does it have, and how many odd-sized subsets does it have?<br />
-Another way to phrase this question is: how many <code>k</code>-subsets<br />
-are there when <code>k=0 mod 2</code>, and how many are there<br />
-when <code>k=1 mod 2</code>?</p>
+Another way to phrase this question is: how many <code class="highlighter-rouge">k</code>-subsets<br />
+are there when <code class="highlighter-rouge">k=0 mod 2</code>, and how many are there<br />
+when <code class="highlighter-rouge">k=1 mod 2</code>?</p>
 
-<p>One way of computing this is to take the <code>n</code>th row of<br />
-Pascal’s triangle and add up all the counts for <code>k=0 mod 2</code><br />
-and then for <code>k=1 mod 2</code>. I have written some functions<br />
+<p>One way of computing this is to take the <code class="highlighter-rouge">n</code>th row of<br />
+Pascal’s triangle and add up all the counts for <code class="highlighter-rouge">k=0 mod 2</code><br />
+and then for <code class="highlighter-rouge">k=1 mod 2</code>. I have written some functions<br />
 that do this in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a>. To use this module, you will also<br />
 need <a href="https://github.com/tedszy/functional-workout/blob/master/grid.rkt">grid.rkt</a>.</p>
 
-<pre><code>-&gt; (subset-count-congruence-table 2 7)
+<div class="highlighter-rouge"><pre class="highlight"><code>-&gt; (subset-count-congruence-table 2 7)
 n         =0     =1  
 -----  -----  -----  
 0          1      0  
@@ -212,12 +224,13 @@ n         =0     =1
 5         16     16  
 6         32     32  
 </code></pre>
+</div>
 
 <p>So, a set of 6 elements has 32 odd-sized subsets and<br />
 32 even-sized subsets. Let’s abstract away the numbers<br />
 and look at only the patterns.</p>
 
-<pre><code>n         =0     =1  
+<div class="highlighter-rouge"><pre class="highlight"><code>n         =0     =1  
 -----  -----  -----  
 0          1      0
 1          =      =  
@@ -227,11 +240,12 @@ and look at only the patterns.</p>
 5          =      =  
 6          =      =  
 </code></pre>
+</div>
 
-<p>For <code>n &gt; 0</code> the pattern repeats itself with a period of 1. There<br />
+<p>For <code class="highlighter-rouge">n &gt; 0</code> the pattern repeats itself with a period of 1. There<br />
 are always as many even-sized subsets as odd-sized. Since<br />
-the total number of subsets is <code>2^n</code>, it must be that there<br />
-are <code>2^(n-1)</code> odd-sized (or even-sized) subsets.</p>
+the total number of subsets is <code class="highlighter-rouge">2^n</code>, it must be that there<br />
+are <code class="highlighter-rouge">2^(n-1)</code> odd-sized (or even-sized) subsets.</p>
 
 <p>And now we see why rephrasing the question in terms of modular<br />
 arithmetic is productive. It is immediately natural to ask: what<br />
@@ -239,7 +253,7 @@ about other moduli? What about the number of subsets with size<br />
 divisible by three? And so on. The code in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> handles<br />
 any modulus. Let’s try mod 3.</p>
 
-<pre><code>-&gt; (subset-count-congruence-table 3 13)
+<div class="highlighter-rouge"><pre class="highlight"><code>-&gt; (subset-count-congruence-table 3 13)
 n         =0     =1     =2  
 -----  -----  -----  -----  
 0          1      0      0  
@@ -256,12 +270,13 @@ n         =0     =1     =2
 11       683    682    683  
 12      1366   1365   1365  
 </code></pre>
+</div>
 
 <p>Let’s abstract away the numbers and keep the patterns.<br />
 There are always two entries that are equal. The third<br />
 is either greater by 1 or less by 1.</p>
 
-<pre><code>n         =0     =1     =2  
+<div class="highlighter-rouge"><pre class="highlight"><code>n         =0     =1     =2  
 -----  -----  -----  -----  
 0         +1      =      =
 1          =      =     -1
@@ -277,13 +292,14 @@ is either greater by 1 or less by 1.</p>
 11         =     -1      =
 12        +1      =      =
 </code></pre>
+</div>
 
 <p>The pattern repeats itself after 6 rows. The period is 6.<br />
 What about other moduli, such as mod 4 or mod 5?<br />
 The code module <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> saves us the pain of<br />
 computing the necessary tables. Here is a table for mod 4.</p>
 
-<pre><code>-&gt; (subset-count-congruence-table 4 11)
+<div class="highlighter-rouge"><pre class="highlight"><code>-&gt; (subset-count-congruence-table 4 11)
 n         =0     =1     =2     =3  
 -----  -----  -----  -----  -----  
 0          1      0      0      0  
@@ -298,6 +314,7 @@ n         =0     =1     =2     =3
 9        136    136    120    120  
 10       256    272    256    240  
 </code></pre>
+</div>
 
 <p>Clearly there is a pattern here, but it’s more complicated.<br />
 Does the pattern (whatever it may be) repeat itself? What is<br />
@@ -345,22 +362,23 @@ incoherencies. But the material and the ideas are there.</p>
           <!--
           <br><span class="smaller">March 24, 2016</span>  <br/>
           -->
-          <div><p>The Bellman-Ford algorithm finds the minimum (or maximum) cost paths through a graph. <a href="https://github.com/tedszy/spst">Simple Problem Solving Tools</a> has an implementation of the Bellman-Ford algorithm. Let’s demonstrate it a problem from from cmu.edu. The task is to find the path with the least cost that goes from node <code>0</code>  to node <code>9</code>.</p>
+          <div><p>The Bellman-Ford algorithm finds the minimum (or maximum) cost paths through a graph. <a href="https://github.com/tedszy/spst">Simple Problem Solving Tools</a> has an implementation of the Bellman-Ford algorithm. Let’s demonstrate it a problem from from cmu.edu. The task is to find the path with the least cost that goes from node <code class="highlighter-rouge">0</code>  to node <code class="highlighter-rouge">9</code>.</p>
 
 <div><img class="fullwidth" src="/assets/img/graph2.jpg" /></div>
 <p><span class="marginnote"></span></p>
 
-<p>The Bellman-Ford algorithm actually finds the minimum cost path from some source node (in this case node <code>0</code>) to all other nodes. By adding the key argument <code>:show-steps t</code> we can make the Bellman-Ford solver output tables of all the intermediate steps, i.e., the distance table and the predecessor table.</p>
+<p>The Bellman-Ford algorithm actually finds the minimum cost path from some source node (in this case node <code class="highlighter-rouge">0</code>) to all other nodes. By adding the key argument <code class="highlighter-rouge">:show-steps t</code> we can make the Bellman-Ford solver output tables of all the intermediate steps, i.e., the distance table and the predecessor table.</p>
 
-<p>First we use Quicklisp to load The Simple Problem Solving Tools. Clone the spst repo into <code>quicklisp/local-projects</code> and then:</p>
+<p>First we use Quicklisp to load The Simple Problem Solving Tools. Clone the spst repo into <code class="highlighter-rouge">quicklisp/local-projects</code> and then:</p>
 
-<pre><code>   &gt; (ql:quickload :spst)
+<div class="highlighter-rouge"><pre class="highlight"><code>   &gt; (ql:quickload :spst)
    &gt; (in-package :spst)
 </code></pre>
+</div>
 
-<p>Now, write a list of nodes and another list of weighted edges corresponding to the edges in the graph. Use these lists to create a graph object. The paths of interest start at <code>0</code>. That will be the source node.</p>
+<p>Now, write a list of nodes and another list of weighted edges corresponding to the edges in the graph. Use these lists to create a graph object. The paths of interest start at <code class="highlighter-rouge">0</code>. That will be the source node.</p>
 
-<pre><code>   SPST&gt; (defparameter nodes-cmu '(0 1 2 3 4 6 8 9 12 15))
+<div class="highlighter-rouge"><pre class="highlight"><code>   SPST&gt; (defparameter nodes-cmu '(0 1 2 3 4 6 8 9 12 15))
 
    SPST&gt; (defparameter edges-cmu
            '((0 8 1) (1 3 12) (1 6 2) (2 1 22) (2 8 8) 
@@ -373,10 +391,11 @@ incoherencies. But the material and the ideas are there.</p>
                                            edges-cmu))
 
 </code></pre>
+</div>
 
 <p>We can now get the distance and predecessor tables. This is a good way to check if you have been doing it right, and a good way for someone like me to make up more such hand-calculation graph problems for you to do.</p>
 
-<pre><code>  SPST&gt; (bellman-ford g-cmu 0 :show-steps t)
+<div class="highlighter-rouge"><pre class="highlight"><code>  SPST&gt; (bellman-ford g-cmu 0 :show-steps t)
 distance table:
     0     1     2     3     4     6     8     9    12    15
     0   NIL   NIL     8   NIL   NIL     1   NIL   NIL   NIL
@@ -393,17 +412,20 @@ predecessor table:
   NIL     4     3     8    15     1     0    12    15     2
   NIL     4     3     8    15     1     0    12    15     2
 </code></pre>
+</div>
 
-<p>That’s nice but what if we want to get the actual path from node <code>0</code> to node <code>9</code>? The function <code>optimal-path</code> decodes this from the information in the hash-table returned by <code>bellman-ford</code>:</p>
+<p>That’s nice but what if we want to get the actual path from node <code class="highlighter-rouge">0</code> to node <code class="highlighter-rouge">9</code>? The function <code class="highlighter-rouge">optimal-path</code> decodes this from the information in the hash-table returned by <code class="highlighter-rouge">bellman-ford</code>:</p>
 
-<pre><code>   SPST&gt; (optimal-path 9 (bellman-ford g-cmu 0))
+<div class="highlighter-rouge"><pre class="highlight"><code>   SPST&gt; (optimal-path 9 (bellman-ford g-cmu 0))
    (0 8 3 2 15 12 9)
 </code></pre>
+</div>
 
-<p>And there we have it. The cost of the best route from <code>0</code> to <code>9</code> is 35, and the route itself goes like so:</p>
+<p>And there we have it. The cost of the best route from <code class="highlighter-rouge">0</code> to <code class="highlighter-rouge">9</code> is 35, and the route itself goes like so:</p>
 
-<pre><code>   0 -&gt; 8 -&gt; 3 -&gt; 2 -&gt; 15 -&gt; 12 -&gt; 9.
+<div class="highlighter-rouge"><pre class="highlight"><code>   0 -&gt; 8 -&gt; 3 -&gt; 2 -&gt; 15 -&gt; 12 -&gt; 9.
 </code></pre>
+</div>
 
 <p>The Bellman-Ford code is here:  <a href="https://github.com/tedszy/spst/blob/master/graphs.lisp">graphs.lisp</a></p>
 
@@ -416,61 +438,66 @@ predecessor table:
           <!--
           <br><span class="smaller">March 19, 2016</span>  <br/>
           -->
-          <div><p>A primitive pythagorean tuple is a tuple of three integers <code>(a,b,c)</code> such that <code>(a,b) = (b,c) = (c,a) = 1</code>, <code>a^2 + b^2 = c^2</code>, and <code>b</code> is even.</p>
+          <div><p>A primitive pythagorean tuple is a tuple of three integers <code class="highlighter-rouge">(a,b,c)</code> such that <code class="highlighter-rouge">(a,b) = (b,c) = (c,a) = 1</code>, <code class="highlighter-rouge">a^2 + b^2 = c^2</code>, and <code class="highlighter-rouge">b</code> is even.</p>
 
-<p>Starting with the first primitive tuple, (3,4,5), all others can be generated by applying the Barning matrices <code>A</code>, <code>B</code>, and <code>C</code>:</p>
+<p>Starting with the first primitive tuple, (3,4,5), all others can be generated by applying the Barning matrices <code class="highlighter-rouge">A</code>, <code class="highlighter-rouge">B</code>, and <code class="highlighter-rouge">C</code>:</p>
 
-<pre><code>A = [1 -2 2      B = [1 2 2      C = [-1 2 2 
+<div class="highlighter-rouge"><pre class="highlight"><code>A = [1 -2 2      B = [1 2 2      C = [-1 2 2 
      2 -1 2           2 1 2           -2 1 2 
      2 -2 3]          2 2 3]          -2 2 3]
 </code></pre>
+</div>
 
-<p>This process generates a ternary tree beginning at the root tuple <code>(3,4,5)</code>. For example,</p>
+<p>This process generates a ternary tree beginning at the root tuple <code class="highlighter-rouge">(3,4,5)</code>. For example,</p>
 
-<pre><code>(A^4)(B^3)(ABC)^2 * (3,4,5) 
+<div class="highlighter-rouge"><pre class="highlight"><code>(A^4)(B^3)(ABC)^2 * (3,4,5) 
 	= (10764945, 55503968, 56538257)
 </code></pre>
+</div>
 <p>which is in fact a primitive Pythagorean tuple, one of the nodes in the tree. Let’s try this using the <a href="https://github.com/tedszy/spst">Simple Problem Solving Tools</a> package.</p>
 
-<pre><code class="language-common-lisp">&gt; (in-package :spst)
-SPST&gt; (follow-path '(A A A A B B B A B C A B C))
-(32033617, 14757744, 35269585 =&gt; (A A A A B B B A B C A B C))
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nb">&gt;</span> <span class="p">(</span><span class="nb">in-package</span> <span class="ss">:spst</span><span class="p">)</span>
+<span class="nv">SPST&gt;</span> <span class="p">(</span><span class="nv">follow-path</span> <span class="o">'</span><span class="p">(</span><span class="nv">A</span> <span class="nv">A</span> <span class="nv">A</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">B</span> <span class="nv">B</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">32033617</span><span class="o">,</span> <span class="mi">14757744</span><span class="o">,</span> <span class="mi">35269585</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="nv">A</span> <span class="nv">A</span> <span class="nv">A</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">B</span> <span class="nv">B</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span><span class="p">))</span>
 
 </code></pre>
+</div>
 
 <p>But we could ask the question the other way around. Given a Pythagorean tuple, what is the path that we must take through the tree in order to arrive at it?</p>
 
-<pre><code class="language-cl">SPST&gt; (depth-search-pytree 
-       :search-for #'(lambda (pt) (with-slots (a b c) pt
-				    (and (= a 32033617)
-					 (= b 14757744)
-					 (= c 35269585))))
-       :limit (lambda (pt) (with-slots (a b c) pt
-			     (&lt;= c 36000000)))
-       :with-path t)
-((32033617, 14757744, 35269585 =&gt; (A A A A B B B A B C A B C)))
-5729606
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nv">SPST&gt;</span> <span class="p">(</span><span class="nv">depth-search-pytree</span> 
+       <span class="ss">:search-for</span> <span class="nf">#'</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">pt</span><span class="p">)</span> <span class="p">(</span><span class="nb">with-slots</span> <span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="nv">pt</span>
+				    <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">a</span> <span class="mi">32033617</span><span class="p">)</span>
+					 <span class="p">(</span><span class="nb">=</span> <span class="nv">b</span> <span class="mi">14757744</span><span class="p">)</span>
+					 <span class="p">(</span><span class="nb">=</span> <span class="nv">c</span> <span class="mi">35269585</span><span class="p">))))</span>
+       <span class="ss">:limit</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">pt</span><span class="p">)</span> <span class="p">(</span><span class="nb">with-slots</span> <span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="nv">pt</span>
+			     <span class="p">(</span><span class="nb">&lt;=</span> <span class="nv">c</span> <span class="mi">36000000</span><span class="p">)))</span>
+       <span class="ss">:with-path</span> <span class="no">t</span><span class="p">)</span>
+<span class="p">((</span><span class="mi">32033617</span><span class="o">,</span> <span class="mi">14757744</span><span class="o">,</span> <span class="mi">35269585</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="nv">A</span> <span class="nv">A</span> <span class="nv">A</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">B</span> <span class="nv">B</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">C</span><span class="p">)))</span>
+<span class="mi">5729606</span>
 </code></pre>
+</div>
 
-<p>The procedute also returned the number of tuples searched: 5,729,606 of them. We can also search without compiling path information, saving lots of memory. Consider the following problem. Suppose <code>(a,b,c)</code> is a primitive Pythagorean tuple. Is there a larger primitive tuple <code>(e,f,g)</code> that is elementwise divisible by <code>(a,b,c)</code>? In other words, does there exist tuples <code>(e,f,g)</code> such that <code>a|e, b|g, c|g</code>? Let’s find out. Consider <code>(a,b,c) = (115, 252, 277)</code>. We will search up to a limit of <code>c &lt;= 10,000,000</code>, but we will not calculate path information this time.</p>
+<p>The procedute also returned the number of tuples searched: 5,729,606 of them. We can also search without compiling path information, saving lots of memory. Consider the following problem. Suppose <code class="highlighter-rouge">(a,b,c)</code> is a primitive Pythagorean tuple. Is there a larger primitive tuple <code class="highlighter-rouge">(e,f,g)</code> that is elementwise divisible by <code class="highlighter-rouge">(a,b,c)</code>? In other words, does there exist tuples <code class="highlighter-rouge">(e,f,g)</code> such that <code class="highlighter-rouge">a|e, b|g, c|g</code>? Let’s find out. Consider <code class="highlighter-rouge">(a,b,c) = (115, 252, 277)</code>. We will search up to a limit of <code class="highlighter-rouge">c &lt;= 10,000,000</code>, but we will not calculate path information this time.</p>
 
-<pre><code class="language-cl">SPST&gt; (depth-search-pytree 
-       :search-for #'(lambda (pt) 
-		       (with-slots (a b c) pt
-			 (and (= 0 (mod a 115))
-			      (= 0 (mod b 252))
-			      (= 0 (mod c 277)))))
-       :limit #'(lambda (pt) 
-		  (with-slots (a b c) pt
-		    (&lt;= c 10000000)))
-       :with-path nil)
-((5253545, 7823592, 9423817) 
- (6998095, 4000752, 8060977)
- (7607825, 2664648, 8060977) 
- (9352375, 1158192, 9423817) 
- (115, 252, 277))
-1591579
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nv">SPST&gt;</span> <span class="p">(</span><span class="nv">depth-search-pytree</span> 
+       <span class="ss">:search-for</span> <span class="nf">#'</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">pt</span><span class="p">)</span> 
+		       <span class="p">(</span><span class="nb">with-slots</span> <span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="nv">pt</span>
+			 <span class="p">(</span><span class="nb">and</span> <span class="p">(</span><span class="nb">=</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">mod</span> <span class="nv">a</span> <span class="mi">115</span><span class="p">))</span>
+			      <span class="p">(</span><span class="nb">=</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">mod</span> <span class="nv">b</span> <span class="mi">252</span><span class="p">))</span>
+			      <span class="p">(</span><span class="nb">=</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">mod</span> <span class="nv">c</span> <span class="mi">277</span><span class="p">)))))</span>
+       <span class="ss">:limit</span> <span class="nf">#'</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">pt</span><span class="p">)</span> 
+		  <span class="p">(</span><span class="nb">with-slots</span> <span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="nv">pt</span>
+		    <span class="p">(</span><span class="nb">&lt;=</span> <span class="nv">c</span> <span class="mi">10000000</span><span class="p">)))</span>
+       <span class="ss">:with-path</span> <span class="no">nil</span><span class="p">)</span>
+<span class="p">((</span><span class="mi">5253545</span><span class="o">,</span> <span class="mi">7823592</span><span class="o">,</span> <span class="mi">9423817</span><span class="p">)</span> 
+ <span class="p">(</span><span class="mi">6998095</span><span class="o">,</span> <span class="mi">4000752</span><span class="o">,</span> <span class="mi">8060977</span><span class="p">)</span>
+ <span class="p">(</span><span class="mi">7607825</span><span class="o">,</span> <span class="mi">2664648</span><span class="o">,</span> <span class="mi">8060977</span><span class="p">)</span> 
+ <span class="p">(</span><span class="mi">9352375</span><span class="o">,</span> <span class="mi">1158192</span><span class="o">,</span> <span class="mi">9423817</span><span class="p">)</span> 
+ <span class="p">(</span><span class="mi">115</span><span class="o">,</span> <span class="mi">252</span><span class="o">,</span> <span class="mi">277</span><span class="p">))</span>
+<span class="mi">1591579</span>
 </code></pre>
+</div>
 
 <p>After searching almost 1.6 million of them, we found some tuples that meet the criteria! I’m sure you can think of many more such interesting ways to query the tree of Pythagorean tuples. If you want to see the code that does all this, it’s right here:</p>
 
@@ -496,7 +523,6 @@ have seen before (match-let).</p>
 All you have to do is install Racket and follow along.</p>
 
 <p><a href="/assets/rational-geometry.pdf">Rational Geometry with Racket (pdf)</a></p>
-
 </div> 
         </li>
           
@@ -567,11 +593,12 @@ element Amir set.</p>
           <!--
           <br><span class="smaller">January 4, 2016</span>  <br/>
           -->
-          <div><p>A concise definition goes like this: a quaternion <code>q</code> is a linear combination</p>
+          <div><p>A concise definition goes like this: a quaternion <code class="highlighter-rouge">q</code> is a linear combination</p>
 
-<pre><code>q = w + xi + yj + zk
+<div class="highlighter-rouge"><pre class="highlight"><code>q = w + xi + yj + zk
 </code></pre>
-<p>where <code>ij = k</code>, <code>jk = i</code>, <code>ki = j</code> and  <code>ijk = -1</code>. But perhaps this doesn’t give us much of a feeling about what quaternions are supposed to be. Is there a way of understanding them without resorting to the imaginaries <code>i, j, k</code>? In fact Hamilton himself preferred to avoid  <code>i, j, k</code> as much as possibe when talking about quaternions. This article presents a particular way of introducing the quaternion idea without <code>i, j, k</code>.</p>
+</div>
+<p>where <code class="highlighter-rouge">ij = k</code>, <code class="highlighter-rouge">jk = i</code>, <code class="highlighter-rouge">ki = j</code> and  <code class="highlighter-rouge">ijk = -1</code>. But perhaps this doesn’t give us much of a feeling about what quaternions are supposed to be. Is there a way of understanding them without resorting to the imaginaries <code class="highlighter-rouge">i, j, k</code>? In fact Hamilton himself preferred to avoid  <code class="highlighter-rouge">i, j, k</code> as much as possibe when talking about quaternions. This article presents a particular way of introducing the quaternion idea without <code class="highlighter-rouge">i, j, k</code>.</p>
 
 <p><a href="/assets/quaternion.pdf">Thinking about Quaternions (pdf)</a></p>
 

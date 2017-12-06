@@ -41,19 +41,19 @@
 <p>July 3, 2016</p>
 
 
-<p><span class="newthought">Consider a set</span>  of size <code>n</code>. How many even-sized subsets<br />
+<p><span class="newthought">Consider a set</span>  of size <code class="highlighter-rouge">n</code>. How many even-sized subsets<br />
 does it have, and how many odd-sized subsets does it have?<br />
-Another way to phrase this question is: how many <code>k</code>-subsets<br />
-are there when <code>k=0 mod 2</code>, and how many are there<br />
-when <code>k=1 mod 2</code>?</p>
+Another way to phrase this question is: how many <code class="highlighter-rouge">k</code>-subsets<br />
+are there when <code class="highlighter-rouge">k=0 mod 2</code>, and how many are there<br />
+when <code class="highlighter-rouge">k=1 mod 2</code>?</p>
 
-<p>One way of computing this is to take the <code>n</code>th row of<br />
-Pascal’s triangle and add up all the counts for <code>k=0 mod 2</code><br />
-and then for <code>k=1 mod 2</code>. I have written some functions<br />
+<p>One way of computing this is to take the <code class="highlighter-rouge">n</code>th row of<br />
+Pascal’s triangle and add up all the counts for <code class="highlighter-rouge">k=0 mod 2</code><br />
+and then for <code class="highlighter-rouge">k=1 mod 2</code>. I have written some functions<br />
 that do this in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a>. To use this module, you will also<br />
 need <a href="https://github.com/tedszy/functional-workout/blob/master/grid.rkt">grid.rkt</a>.</p>
 
-<pre><code>-&gt; (subset-count-congruence-table 2 7)
+<div class="highlighter-rouge"><pre class="highlight"><code>-&gt; (subset-count-congruence-table 2 7)
 n         =0     =1  
 -----  -----  -----  
 0          1      0  
@@ -64,12 +64,13 @@ n         =0     =1
 5         16     16  
 6         32     32  
 </code></pre>
+</div>
 
 <p>So, a set of 6 elements has 32 odd-sized subsets and<br />
 32 even-sized subsets. Let’s abstract away the numbers<br />
 and look at only the patterns.</p>
 
-<pre><code>n         =0     =1  
+<div class="highlighter-rouge"><pre class="highlight"><code>n         =0     =1  
 -----  -----  -----  
 0          1      0
 1          =      =  
@@ -79,11 +80,12 @@ and look at only the patterns.</p>
 5          =      =  
 6          =      =  
 </code></pre>
+</div>
 
-<p>For <code>n &gt; 0</code> the pattern repeats itself with a period of 1. There<br />
+<p>For <code class="highlighter-rouge">n &gt; 0</code> the pattern repeats itself with a period of 1. There<br />
 are always as many even-sized subsets as odd-sized. Since<br />
-the total number of subsets is <code>2^n</code>, it must be that there<br />
-are <code>2^(n-1)</code> odd-sized (or even-sized) subsets.</p>
+the total number of subsets is <code class="highlighter-rouge">2^n</code>, it must be that there<br />
+are <code class="highlighter-rouge">2^(n-1)</code> odd-sized (or even-sized) subsets.</p>
 
 <p>And now we see why rephrasing the question in terms of modular<br />
 arithmetic is productive. It is immediately natural to ask: what<br />
@@ -91,7 +93,7 @@ about other moduli? What about the number of subsets with size<br />
 divisible by three? And so on. The code in <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> handles<br />
 any modulus. Let’s try mod 3.</p>
 
-<pre><code>-&gt; (subset-count-congruence-table 3 13)
+<div class="highlighter-rouge"><pre class="highlight"><code>-&gt; (subset-count-congruence-table 3 13)
 n         =0     =1     =2  
 -----  -----  -----  -----  
 0          1      0      0  
@@ -108,12 +110,13 @@ n         =0     =1     =2
 11       683    682    683  
 12      1366   1365   1365  
 </code></pre>
+</div>
 
 <p>Let’s abstract away the numbers and keep the patterns.<br />
 There are always two entries that are equal. The third<br />
 is either greater by 1 or less by 1.</p>
 
-<pre><code>n         =0     =1     =2  
+<div class="highlighter-rouge"><pre class="highlight"><code>n         =0     =1     =2  
 -----  -----  -----  -----  
 0         +1      =      =
 1          =      =     -1
@@ -129,13 +132,14 @@ is either greater by 1 or less by 1.</p>
 11         =     -1      =
 12        +1      =      =
 </code></pre>
+</div>
 
 <p>The pattern repeats itself after 6 rows. The period is 6.<br />
 What about other moduli, such as mod 4 or mod 5?<br />
 The code module <a href="https://github.com/tedszy/functional-workout/blob/master/pascal.rkt">pascal.rkt</a> saves us the pain of<br />
 computing the necessary tables. Here is a table for mod 4.</p>
 
-<pre><code>-&gt; (subset-count-congruence-table 4 11)
+<div class="highlighter-rouge"><pre class="highlight"><code>-&gt; (subset-count-congruence-table 4 11)
 n         =0     =1     =2     =3  
 -----  -----  -----  -----  -----  
 0          1      0      0      0  
@@ -150,6 +154,7 @@ n         =0     =1     =2     =3
 9        136    136    120    120  
 10       256    272    256    240  
 </code></pre>
+</div>
 
 <p>Clearly there is a pattern here, but it’s more complicated.<br />
 Does the pattern (whatever it may be) repeat itself? What is<br />
