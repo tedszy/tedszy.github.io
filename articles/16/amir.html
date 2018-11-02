@@ -41,53 +41,53 @@
 <p>February 14, 2016</p>
 
 
-<p><span class="newthought">The Amir problem</span>  was proposed to me a long time ago by an <br />
-engineering student named Amir. Suppose you have a lottery based <br />
-on drawing 6 numbers from a set of 49 numbers. How many such <br />
-combinations do you need in order to guarantee that the outcome <br />
+<p><span class="newthought">The Amir problem</span>  was proposed to me a long time ago by an 
+engineering student named Amir. Suppose you have a lottery based 
+on drawing 6 numbers from a set of 49 numbers. How many such 
+combinations do you need in order to guarantee that the outcome 
 will always score at least 3 numbers out of the winning draw of 6?</p>
 
-<p>Here is a brute-force solution. Generate all 13,983,816 <br />
-combinations of 6 objects chosen from a set of 49. Go through <br />
-them one at time. Add a combination to the solution set if it <br />
-does not have more that two objects in common with any other <br />
-combination in the solution set. If you do this you’re likely<br />
+<p>Here is a brute-force solution. Generate all 13,983,816 
+combinations of 6 objects chosen from a set of 49. Go through 
+them one at time. Add a combination to the solution set if it 
+does not have more that two objects in common with any other 
+combination in the solution set. If you do this you’re likely
 to get a solution set with about 450 combinations.</p>
 
-<p>The interesting thing about this problem is that the size of<br />
-the solution set (we can call it the Amir set) depends on the<br />
-order in which you examine and add the combinations. If you<br />
-shuffle the vector of 13.9 million combinations and then build<br />
-an Amir set, you can get, say, 400 elements or 550 elements for<br />
-example. What is the smallest possible Amir set? What is the <br />
+<p>The interesting thing about this problem is that the size of
+the solution set (we can call it the Amir set) depends on the
+order in which you examine and add the combinations. If you
+shuffle the vector of 13.9 million combinations and then build
+an Amir set, you can get, say, 400 elements or 550 elements for
+example. What is the smallest possible Amir set? What is the 
 largest possible Amir set? I don’t know yet.</p>
 
-<p>For a long time, the smallest Amir set I found was around 360<br />
-combinations. But recently, by means of a new trick, I happend<br />
+<p>For a long time, the smallest Amir set I found was around 360
+combinations. But recently, by means of a new trick, I happend
 to find one that is only 241 combinations. How low can it go?</p>
 
-<p>To do experiments with Amir sets, we need some fast code, <br />
-so this calls for C++. Combinations are represented by <br />
-the first 49 bits of 64-bit integers with popcount 6. They <br />
-are compared using Kernighan’s popcount algorithm, which for <br />
-this particular application is the fastest way I have yet found. <br />
-The original Amir program was written in Matlab and it took <br />
-something like ten days (!) to finish on an old Intel Pentium. <br />
-But today, with C++ and bit-hacking, a typical Amir set can be <br />
+<p>To do experiments with Amir sets, we need some fast code, 
+so this calls for C++. Combinations are represented by 
+the first 49 bits of 64-bit integers with popcount 6. They 
+are compared using Kernighan’s popcount algorithm, which for 
+this particular application is the fastest way I have yet found. 
+The original Amir program was written in Matlab and it took 
+something like ten days (!) to finish on an old Intel Pentium. 
+But today, with C++ and bit-hacking, a typical Amir set can be 
 computed on average hardware in about 1 second.</p>
 
 <p><a href="https://github.com/tedszy/more-fun-to-compute/tree/master/amir">Amir code</a>.</p>
 
-<p>You can play with the order in which the combinations are <br />
-evaluated, and with the way that the Amir set is seeded. <br />
-Try to find an Amir set smaller than 241 elements. Let me <br />
+<p>You can play with the order in which the combinations are 
+evaluated, and with the way that the Amir set is seeded. 
+Try to find an Amir set smaller than 241 elements. Let me 
 know if you do.</p>
 
-<p>The Amir project has some Common Lisp code for generating a <br />
-latex/tikz graphic representing an Amir set. Each element of <br />
-an Amir set is a popcount 6 number in a 49-bit field, so each <br />
-one can be represented as a path through a lattice: 1 is up <br />
-and 0 is to the right. Below is the visualization of the 241 <br />
+<p>The Amir project has some Common Lisp code for generating a 
+latex/tikz graphic representing an Amir set. Each element of 
+an Amir set is a popcount 6 number in a 49-bit field, so each 
+one can be represented as a path through a lattice: 1 is up 
+and 0 is to the right. Below is the visualization of the 241 
 element Amir set.</p>
 
 <div><img class="fullwidth" src="assets/img/amir-241.png" /></div>
