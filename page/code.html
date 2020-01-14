@@ -5,104 +5,144 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Code</title>
-  <meta name="description" content="Mathematics and Computer Science Teaching">
+  <title>code</title>
+  <meta name="description" content="mathematics and computer science teaching">
 
-
-  <link rel="stylesheet" href="/css/tufte.css">	
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
   
-
-  <!-- Google Fonts loaded here -->
-  <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
-
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  
   <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
   
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
-  <link rel="canonical" href="http://localhost:4000/page/code">
-  <link rel="alternate" type="application/rss+xml" title="The Proof Chef" href="http://localhost:4000/feed.xml" />
-</head>
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
 
-  <body>
+  <link rel="canonical" href="http://localhost:4000/page/code">
+
+  <link rel="alternate" type="application/rss+xml" title="tedszy" href="http://localhost:4000/feed.xml" />
+</head>
+ 
+
+  <body class="full-width">
     <!--- Header and nav template site-wide -->
 <header>
-    <nav class="group">
-		<a href="/"><img class="badge" src="/assets/img/lambda-parens-logo.jpg" alt="New"></a>
-		<a href="/">Notebook</a>
-		<a href="/page">Articles</a>
-		<a href="/page/code.html">Code</a>
-		<a href="/page/contact.html">Contact</a>
-	</nav>
+  <nav class="group">
+        <a href="/"><img class="badge" src="/assets/img/lambda-logo-mini.jpg" alt="t.sz"></a>
+      
+	
+		
+  	
+		
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+		
+  	
+		
+		    
+		      <a href="/">home</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/blog">blog</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/get_started">Get started</a>
+		    
+	    
+  	
+		
+		    
+		      <a class="active" href="/page/code" class="active">code</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/docs">Docs</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/training">Training</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/gallery">gallery</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/contact">contact</a>
+		    
+	    
+  	
+    </nav>
 </header>
 
     <article>
-      <h1>Code</h1>
-<p></p>
+      <h1 class="content-listing-header sans">CODE</h1>
 
+<h2 id="racketry">Racketry</h2>
 
-<h3 id="platonic">Platonic</h3>
+<p>Exercises and projects done in Racket. So far I have a bunch of SICP problems, the Sierpinski triangle project, lambda calculus experiments, and more. The code is meant for you to read and to learn from: there are extensive comments.</p>
 
-<p>How many distinct ways can you color the vertices, edges and faces 
-of tetrahedrons and cubes? This Lisp package computes the different
-ways using group theory.</p>
+<p><a href="https://github.com/tedszy/Racketry">Racketry</a></p>
 
-<p><a href="https://github.com/tedszy/platonic">platonic (Common Lisp)</a></p>
+<h2 id="platonic">Platonic</h2>
 
-<h3 id="inside-out">Inside-Out</h3>
+<p>One day I asked a student (who had peculiar gifts in reasoning about combinatorics) how many distinct ways can you color the vertices, edges and faces 
+of tetrahedrons and cubes? For example, given three colors, how many distinct ways can you color the faces of a cube, ignoring rotations? My student sat there thinking, staring into space, and answered several questions like this.</p>
 
-<p>Experiments in mutual recursion and repeated function application.</p>
+<p>Since I had no clue myself what the correct answers should be, I wrote a Common Lisp package that uses group theory to compute the ways.</p>
 
-<p><a href="https://github.com/tedszy/inside-out">inside-out (Scheme-6)</a></p>
+<p><a href="https://github.com/tedszy/platonic">platonic</a></p>
 
-<h3 id="simple-problem-solving-tools">Simple Problem Solving Tools</h3>
+<p>And yes, the student’s answer to every such question turned out to be correct.</p>
 
-<p>They might not be very good, but they are good enough
-to solve your problem.</p>
+<h2 id="chrysalis">Chrysalis</h2>
 
-<p><a href="https://github.com/tedszy/spst">spst (Common Lisp)</a></p>
+<p>Projects in C++. The Amir problem (combinatorics), NLP tools for generating poetical gibberish from James Joyce, Shakespeare and H. P. Lovecraft (anagrams, markov text), a couple of discrete math problems (nthroot, prime heap) and a command-line utility that transforms CSV student data into a LaTeX report (Gu).</p>
 
-<h3 id="its-more-fun-to-compute">It’s More Fun to Compute</h3>
+<p><a href="https://github.com/tedszy/chrysalis">chrysalis</a></p>
 
-<p>Using computers the way they were meant to be used!
-For calculating stuff!</p>
+<h2 id="simple-problem-solving-tools">Simple Problem Solving Tools</h2>
 
-<p><a href="https://github.com/tedszy/more-fun-to-compute">it’s more fun to compute</a></p>
+<p>Common lisp package of informatics problem solving tools. They might not be very good, but they are good enough to solve your problem. Will be ported to Racket soon.</p>
 
-<h3 id="functional-workout">Functional Workout</h3>
+<p><a href="https://github.com/tedszy/spst">spst</a></p>
 
-<p>Clone this repo, run the tests, then run the demo to see
-a bunch of examples.</p>
+<p>At least they were good enough to solve <em>my</em> problems, or at least some of them. I used these tools for Project Euler.</p>
 
-<p><a href="https://github.com/tedszy/functional-workout">functional workout</a></p>
+<h2 id="inside-out">Inside-Out</h2>
 
-<p>The code includes Euclidean algorithm generalizations, Fermat’s factoring method, continued fractions, real analysis experiments, a geometry problem-solving module, modules for combinatorics, Church arithmetic, permutation groups and basic polynomial algebra. We also have an example of getting Racket to talk to Apache CouchDB via http.</p>
+<p>Experiments in mutual recursion and repeated function application.
+Written in Guile-scheme for now, to be translated into Racket soon.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nv">$ </span>git clone https://github.com/tedszy/functional-workout.git
-  <span class="nv">$ </span><span class="nb">cd </span>functional-workout
-  <span class="nv">$ </span>raco <span class="nb">test</span>
-  <span class="nv">$ </span>racket demo.rkt
-</code></pre></div></div>
-
-<h3 id="gu-grading-utility">Gu Grading Utility</h3>
-
-<p>I wrote this C++ program to compute grades and generate
-nice looking reports from CSV files. It uses Sheet,
-which is a special class for handling column-aligned text,
-and Shrdlu, a simple CSV reader.</p>
-
-<p><a href="https://github.com/tedszy/gu">Gu grading utility</a>.</p>
-
-
+<p><a href="https://github.com/tedszy/inside-out">inside-out</a></p>
 
 
     </article>
-    <span class="print-footer">Code - Ted Szylowiec</span>
+    <span class="print-footer">code - ted szylowiec</span>
     <footer>
-  <ul class="footer-links group">
-   <!-- 
-   <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
-   -->
+  <hr class="slender">
+  <ul class="footer-links">
+    <li><a href="mailto:tedszy@gmail.com"><span class="icon-mail"></span></a></li>    
     
       <li>
         <a href="//github.com/tedszy"><span class="icon-github"></span></a>
@@ -110,8 +150,8 @@ and Shrdlu, a simple CSV reader.</p>
       
   </ul>
 <div class="credits">
-<span>&copy; 2020 &nbsp;&nbsp;TED SZYLOWIEC</span></br> 
-<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for Mathematics Teaching </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+<span>&copy; 2020 &nbsp;&nbsp;TED SZYLOWIEC</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for math and informatics </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
 </div>  
 </footer>
 
