@@ -225,7 +225,7 @@ ul, ol { width: 45%; -webkit-padding-start: 5%; -webkit-padding-end: 5%; list-st
 
 figure, figure img.maincolumn { max-width: 55%; -webkit-margin-start: 0; -webkit-margin-end: 0; margin-bottom: 3em; }
 
-figcaption { float: right; clear: right; margin-right: -48%; margin-top: 0; margin-bottom: 0; font-size: 1.0rem; line-height: 1.6; vertical-align: baseline; position: relative; max-width: 40%; }
+figcaption { float: right; clear: right; margin-right: -78%; margin-top: 0; margin-bottom: 2%; font-size: 1rem; line-height: 1.1; vertical-align: baseline; position: relative; max-width: 60%; }
 
 figure.fullwidth figcaption { float: left; margin-right: 0%; margin-left: 36%; }
 
