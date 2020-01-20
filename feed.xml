@@ -3,10 +3,10 @@
   <channel>
     <title>tedszy</title>
     <description>mathematics and computer science teaching</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 18 Jan 2020 14:54:50 -0500</pubDate>
-    <lastBuildDate>Sat, 18 Jan 2020 14:54:50 -0500</lastBuildDate>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 20 Jan 2020 09:16:57 -0500</pubDate>
+    <lastBuildDate>Mon, 20 Jan 2020 09:16:57 -0500</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -124,8 +124,8 @@ this list gives the total number of solutions: 42.&lt;/p&gt;
 was &lt;script type=&quot;math/tex&quot;&gt;a + 2b + c \leq 100&lt;/script&gt;?&lt;/p&gt;
 </description>
         <pubDate>Tue, 14 Jan 2020 08:00:00 -0500</pubDate>
-        <link>http://localhost:4000/articles/20/cayley-21</link>
-        <guid isPermaLink="true">http://localhost:4000/articles/20/cayley-21</guid>
+        <link>/articles/20/cayley-21</link>
+        <guid isPermaLink="true">/articles/20/cayley-21</guid>
         
         
       </item>
