@@ -3,11 +3,168 @@
   <channel>
     <title>tedszy</title>
     <description>mathematics and computer science teaching</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Jan 2020 10:20:19 -0500</pubDate>
-    <lastBuildDate>Wed, 22 Jan 2020 10:20:19 -0500</lastBuildDate>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 22 Jan 2020 20:53:01 -0500</pubDate>
+    <lastBuildDate>Wed, 22 Jan 2020 20:53:01 -0500</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Cayley problem 23, 1997</title>
+        <description>&lt;p&gt;Given the set &lt;script type=&quot;math/tex&quot;&gt;S=\{1, 2, 3, 5, 8, 13, 34, 55\}&lt;/script&gt;, how
+many integers  &lt;script type=&quot;math/tex&quot;&gt;3 \leq n \leq 89&lt;/script&gt; cannot be written
+as the sum of exactly two different elements of &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;?&lt;/p&gt;
+
+&lt;p&gt;The numbers in &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; are Fibonacci numbers, so we may
+guess that some magic is involved here. Indeed, we vaguely
+remember something about numbers having unique representations
+as sums of Fibonacci numbers. If the sum of any two Fibonacci
+numbers is a unique integer, the job of counting
+possibilities would be a lot simpler.
+Perhaps we can prove this. Here are the first 10 Fibonacci numbers:&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;1&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;2&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;3&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;4&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;5&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;6&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;7&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;8&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;9&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;10&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;5&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;8&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;13&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;21&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;34&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;55&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Set &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; contains &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;. Notice that
+&lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt; is not included in &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;. We want to prove that the sum
+of any two different Fibonacci numbers &lt;script type=&quot;math/tex&quot;&gt;F_m&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; with
+&lt;script type=&quot;math/tex&quot;&gt;m,n &gt; 1&lt;/script&gt; is unique.&lt;/p&gt;
+
+&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+m &lt; n %]]&gt;&lt;/script&gt;. There are two situations to think about.
+First, if &lt;script type=&quot;math/tex&quot;&gt;m = n-1&lt;/script&gt; then&lt;/p&gt;
+
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+F_m + F_n = F_{n-1} + F_n = F_{n+1}
+&lt;/script&gt;&lt;/div&gt;
+
+&lt;p&gt;by definition of Fibonacci numbers. And if &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+m&lt;n-1&lt;n %]]&gt;&lt;/script&gt; it is
+clear that&lt;/p&gt;
+
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+F_n &lt; F_m + F_n &lt; F_{n+1}.
+&lt;/script&gt;&lt;/div&gt;
+
+&lt;p&gt;Either way, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+F_m &lt; F_m+F_n \leq F_{n+1} %]]&gt;&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Suppose the same number &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; can be written as the sum of two different
+Fibonacci numbers in two different ways:&lt;/p&gt;
+
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+q = F_m + F_n = F_{m'} + F_{n'}.
+&lt;/script&gt;&lt;/div&gt;
+
+&lt;p&gt;There is no loss if we suppose &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+m&lt;n %]]&gt;&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+m' &lt; n' %]]&gt;&lt;/script&gt;.
+Since &lt;script type=&quot;math/tex&quot;&gt;q = F_m+F_n&lt;/script&gt;, we have&lt;/p&gt;
+
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+F_n &lt; q \leq F_{n+1}.
+&lt;/script&gt;&lt;/div&gt;
+
+&lt;p&gt;And since &lt;script type=&quot;math/tex&quot;&gt;q = F_{m'} + F_{n'}&lt;/script&gt;, we have&lt;/p&gt;
+
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+F_{n'} &lt; q \leq F_{n'+1}.
+&lt;/script&gt;&lt;/div&gt;
+
+&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; is sandwiched between two consecutive Fibonacci
+numbers, it must be that &lt;script type=&quot;math/tex&quot;&gt;F_n=F_{n'}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F_m = F_{m'}&lt;/script&gt;.
+For Fibonacci numbers greater than &lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt;, these imply
+&lt;script type=&quot;math/tex&quot;&gt;m=m'&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;n=n'&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now we can count. Imagine all the possible sums of two elements of &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;
+organized into a &lt;script type=&quot;math/tex&quot;&gt;9\times 9&lt;/script&gt; table. We remove the sums
+of the form &lt;script type=&quot;math/tex&quot;&gt;a + a&lt;/script&gt;: this amounts to removing the diagonal
+which has 9 element. Then we divide by two to remove one
+of the upper or lower triangles of the table, because we don’t
+want to count both &lt;script type=&quot;math/tex&quot;&gt;a+b&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b+a&lt;/script&gt;. This leaves&lt;/p&gt;
+
+&lt;div class=&quot;mathblock&quot;&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+\frac{81 - 9}{2} = 36.
+&lt;/script&gt;&lt;/div&gt;
+&lt;p&gt;There are 36 integers expressible as the sum of two elements of &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;.
+Smallest is 3, largest is 89. In the range &lt;script type=&quot;math/tex&quot;&gt;3\leq n \leq 89&lt;/script&gt; there are &lt;script type=&quot;math/tex&quot;&gt;89-3+1= 87&lt;/script&gt; numbers. The total number of integers not expressible
+is therefore 87 - 36 = 51.&lt;/p&gt;
+
+&lt;p&gt;Let’s check this by Racket programming.&lt;/p&gt;
+
+&lt;p&gt;First we create a list of all the numbers expressible
+as the sum of two different elements of &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;. We use
+a nested for-loop with a when-clause to catch the
+cases we are interested in.&lt;/p&gt;
+
+&lt;div class=&quot;language-racket highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cayley-23-list&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;21&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;34&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;expressibles&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;for*/list&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Fm&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cayley-23-list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+              &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Fn&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cayley-23-list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+              &lt;span class=&quot;nt&quot;&gt;#:when&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Fm&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Fm&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And then we filter the range of numbers from 3 to 89,
+keeping only the ones that are not in the expressible list.
+Getting the length of this filtered range solves the problem.&lt;/p&gt;
+
+&lt;div class=&quot;language-racket highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;solve-cayley-23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;length&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;filter&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;member&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;expressibles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;90&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Run it in the Racket interactive REPL&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; (solve-cayley-23)
+51
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There we go!&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 22 Jan 2020 08:00:00 -0500</pubDate>
+        <link>/articles/20/cayley-23</link>
+        <guid isPermaLink="true">/articles/20/cayley-23</guid>
+        
+        
+      </item>
     
       <item>
         <title>Cayley problem 21, 1997</title>
@@ -124,8 +281,8 @@ this list gives the total number of solutions: 42.&lt;/p&gt;
 was &lt;script type=&quot;math/tex&quot;&gt;a + 2b + c \leq 100&lt;/script&gt;?&lt;/p&gt;
 </description>
         <pubDate>Tue, 14 Jan 2020 08:00:00 -0500</pubDate>
-        <link>http://localhost:4000/articles/20/cayley-21</link>
-        <guid isPermaLink="true">http://localhost:4000/articles/20/cayley-21</guid>
+        <link>/articles/20/cayley-21</link>
+        <guid isPermaLink="true">/articles/20/cayley-21</guid>
         
         
       </item>
