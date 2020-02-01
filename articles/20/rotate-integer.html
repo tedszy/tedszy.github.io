@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-156274734-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-156274734-1');
+</script>
+
+
+
+  <meta property="og.image" content="https://github.com/tedszy/tedszy.github.io/tree/master/assets/img/love_math.png" />
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Reverse and rotate integers</title>
+  <meta name="description" content="To do!(define (reverse-integer n)  (let loop ((n n) (result 0))    (if (&lt; n 1)        result        (loop (quotient n 10)              (+ (* result 10)   ...">
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/articles/20/rotate-integer">
+
+  <link rel="alternate" type="application/rss+xml" title="tedszy" href="/feed.xml" />
+
+</head>
+ 
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+  <nav class="group">
+        <a href="/"><img class="badge" src="/assets/img/love_math_mini.png" alt="t.sz"></a>
+      
+	
+		
+  	
+		
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+		
+  	
+		
+		    
+		      <a href="/">Creative Math!</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/blog">blog</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/get_started">start</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/code">code</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/docs">Docs</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/training">Training</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/videos">videos</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/gallery">Gallery</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/page/contact">contact</a>
+		    
+	    
+  	
+    </nav>
+</header>
+
+    <article class="group">
+      <h1>Reverse and rotate integers</h1>
+<p class="subtitle">January 27, 2020</p>
+
+<p>To do!</p>
+
+<div class="language-racket highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">reverse-integer</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="nv">loop</span> <span class="p">((</span><span class="nf">n</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">result</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nv">result</span>
+        <span class="p">(</span><span class="nf">loop</span> <span class="p">(</span><span class="nb">quotient</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">result</span> <span class="mi">10</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nb">remainder</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">))))))</span>
+</code></pre></div></div>
+
+<div class="language-racket highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rotate-integer</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="nv">loop</span> <span class="p">((</span><span class="nf">n</span> <span class="nv">n</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">multiplier</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">result</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">+</span> <span class="nv">result</span> <span class="p">(</span><span class="nb">remainder</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">loop</span> <span class="p">(</span><span class="nb">quotient</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">*</span> <span class="nv">multiplier</span> <span class="mi">10</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">+</span> <span class="nv">result</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">multiplier</span> <span class="p">(</span><span class="nb">remainder</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)))))))</span>
+</code></pre></div></div>
+
+
+
+    </article>
+    <span class="print-footer">Reverse and rotate integers - January 27, 2020 - ted szylowiec</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li><a href="mailto:tedszy@gmail.com"><span class="icon-mail"></span></a></li>    
+    
+      <li>
+        <a href="//github.com/tedszy"><span class="icon-github"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2020 &nbsp;&nbsp;TED SZYLOWIEC</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for math and informatics </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
