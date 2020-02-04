@@ -124,34 +124,6 @@
           
         <li class="listing">
           <hr class="slender">
-          <a href="/articles/20/rotate-integer"><h3 class="contrast">Reverse and rotate integers</h3></a>
-          <br><span class="smaller">January 27, 2020</span>  <br/>
-          <div><p>To do!</p>
-
-<div class="language-racket highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">reverse-integer</span> <span class="nv">n</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">let</span> <span class="nv">loop</span> <span class="p">((</span><span class="nf">n</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">result</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="nv">result</span>
-        <span class="p">(</span><span class="nf">loop</span> <span class="p">(</span><span class="nb">quotient</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
-              <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">result</span> <span class="mi">10</span><span class="p">)</span>
-                 <span class="p">(</span><span class="nb">remainder</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">))))))</span>
-</code></pre></div></div>
-
-<div class="language-racket highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rotate-integer</span> <span class="nv">n</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">let</span> <span class="nv">loop</span> <span class="p">((</span><span class="nf">n</span> <span class="nv">n</span><span class="p">)</span>
-            <span class="p">(</span><span class="nf">multiplier</span> <span class="mi">10</span><span class="p">)</span>
-            <span class="p">(</span><span class="nf">result</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="p">(</span><span class="nb">+</span> <span class="nv">result</span> <span class="p">(</span><span class="nb">remainder</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">))</span>
-        <span class="p">(</span><span class="nf">loop</span> <span class="p">(</span><span class="nb">quotient</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)</span>
-              <span class="p">(</span><span class="nb">*</span> <span class="nv">multiplier</span> <span class="mi">10</span><span class="p">)</span>
-              <span class="p">(</span><span class="nb">+</span> <span class="nv">result</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">multiplier</span> <span class="p">(</span><span class="nb">remainder</span> <span class="nv">n</span> <span class="mi">10</span><span class="p">)))))))</span>
-</code></pre></div></div>
-</div> 
-        </li>
-          
-        <li class="listing">
-          <hr class="slender">
           <a href="/articles/20/cayley-23"><h3 class="contrast">Cayley problem 23, 1997</h3></a>
           <br><span class="smaller">January 22, 2020</span>  <br/>
           <div><p>Given the set <script type="math/tex">S=\{1, 2, 3, 5, 8, 13, 34, 55\}</script>, how
