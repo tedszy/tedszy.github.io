@@ -3,10 +3,10 @@
   <channel>
     <title>tedszy</title>
     <description>mathematics and computer science teaching</description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 06 Mar 2020 16:24:21 -0500</pubDate>
-    <lastBuildDate>Fri, 06 Mar 2020 16:24:21 -0500</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 08 Mar 2020 14:09:03 -0400</pubDate>
+    <lastBuildDate>Sun, 08 Mar 2020 14:09:03 -0400</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -160,8 +160,8 @@ Getting the length of this filtered range solves the problem.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 22 Jan 2020 08:00:00 -0500</pubDate>
-        <link>/articles/20/cayley-23</link>
-        <guid isPermaLink="true">/articles/20/cayley-23</guid>
+        <link>http://localhost:4000/articles/20/cayley-23</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/20/cayley-23</guid>
         
         
       </item>
@@ -281,8 +281,8 @@ this list gives the total number of solutions: 42.&lt;/p&gt;
 was &lt;script type=&quot;math/tex&quot;&gt;a + 2b + c \leq 100&lt;/script&gt;?&lt;/p&gt;
 </description>
         <pubDate>Tue, 14 Jan 2020 08:00:00 -0500</pubDate>
-        <link>/articles/20/cayley-21</link>
-        <guid isPermaLink="true">/articles/20/cayley-21</guid>
+        <link>http://localhost:4000/articles/20/cayley-21</link>
+        <guid isPermaLink="true">http://localhost:4000/articles/20/cayley-21</guid>
         
         
       </item>
